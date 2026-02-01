@@ -2,7 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([butt], [0.1.16], [BUG-REPORT-ADDRESS])
+AC_INIT([bnbutt], [0.1], [https://beatsnbreaks.nl])
+AC_DEFINE([BNBUTT_FULLNAME], ["Beats 'n Breaks Use This Tool"], [Full product name])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 
 AC_CONFIG_SRCDIR([config.h.in])

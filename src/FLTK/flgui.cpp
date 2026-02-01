@@ -52,6 +52,37 @@ void flgui::cb_button_info(Fl_Button* o, void* v) {
 }
 
 #include <FL/Fl_Image.H>
+#include <map>
+
+// Image scaling cache (avoids leaks/CPU churn on window resize)
+static Fl_Image* cached_copy(Fl_Image* base, int w, int h) {
+  if(!base || w <= 0 || h <= 0) return base;
+
+  struct Key {
+    const Fl_Image* base;
+    int w;
+    int h;
+    bool operator<(const Key& o) const {
+      if(base != o.base) return base < o.base;
+      if(w != o.w) return w < o.w;
+      return h < o.h;
+    }
+  };
+
+  static std::map<Key, Fl_Image*> cache;
+  Key k;
+  k.base = base;
+  k.w = w;
+  k.h = h;
+
+  std::map<Key, Fl_Image*>::iterator it = cache.find(k);
+  if(it != cache.end()) return it->second;
+
+  Fl_Image* img = base->copy(w, h);
+  cache[k] = img ? img : base;
+  return cache[k];
+}
+
 static const unsigned char idata_green_dark[] =
 {0,0,0,0,0,0,0,0,32,76,32,112,33,78,33,204,34,80,34,245,35,81,34,255,35,81,
 34,245,34,79,33,204,32,77,32,112,0,0,0,0,0,0,0,0,0,0,0,0,32,77,32,153,35,81,34,
@@ -914,38 +945,137 @@ static void window_main_resized(Fl_My_Double_Window* win, void* user) {
   const int W = win->w();
   const int H = win->h();
 
-  // Keep original top layout height at 195px (controls), and let the log expand.
-  const int topH = 195;
+  // Base UI geometry (as designed in FLUID)
+  const float baseW = 430.0f;
+  const float baseH = 380.0f;
 
-  // LCD spans the window width (with 10px margins).
-  if(g->lcd) g->lcd->resize(10, 9, W - 20, 95);
+  // Uniform scale factor so the UI remains usable on tiny + huge screens.
+  float sW = (float)W / baseW;
+  float sH = (float)H / baseH;
+  float s = sW < sH ? sW : sH;
+  if(s < 0.75f) s = 0.75f;   // prevent unreadably small UI
+  if(s > 2.50f) s = 2.50f;   // prevent comically huge UI
 
-  // Gain slider expands horizontally.
-  if(g->slider_gain) g->slider_gain->resize(50, 168, W - 95, 15);
+  const float s_local = s;
+  #define S(v) ((int)((v) * s_local + 0.5f))
 
-  // Right-anchored buttons.
-  if(g->button_cfg)  g->button_cfg->position(W - 10 - 68, 114);
-  if(g->button_info) g->button_info->position(W - 10 - 68, 143);
+  // Top layout height scales; log/console area takes the remainder.
+  const int topH = S(195);
+
+  // --- Main widgets ---------------------------------------------------------
+  if(g->lcd) g->lcd->resize(S(10), S(9), W - S(20), S(95));
+
+  // Transport buttons
+  const int btnSz = S(30);
+  if(g->button_record)     g->button_record->resize(S(10),  S(121), btnSz, btnSz);
+  if(g->button_disconnect) g->button_disconnect->resize(S(62),  S(121), btnSz, btnSz);
+  if(g->button_connect)    g->button_connect->resize(S(102), S(121), btnSz, btnSz);
+
+  // Settings + more buttons (right anchored)
+  const int rightMargin = S(10);
+  const int cfgW = S(68);
+  const int cfgH = S(22);
+  if(g->button_cfg)  g->button_cfg->resize(W - rightMargin - cfgW, S(114), cfgW, cfgH);
+
+  const int moreW = S(68);
+  const int moreH = S(15);
+  if(g->button_info) g->button_info->resize(W - rightMargin - moreW, S(143), moreW, moreH);
+
+  // Gain slider
+  if(g->slider_gain) g->slider_gain->resize(S(50), S(168), W - S(95), S(15));
+
+  // dB labels
+  if(g->label_minus24db) g->label_minus24db->resize(S(10), S(167), S(30), S(16));
+  if(g->label_plus24db)  g->label_plus24db->resize(W - S(40), S(167), S(30), S(16));
 
   // Info output is the resizable area.
   if(g->info_output) g->info_output->resize(0, topH, W, H - topH);
 
-  // Right-side +24dB label anchored to the right.
-  // (The -24dB label stays on the left at x=10)
-  // NOTE: We don't store a pointer to that Fl_Box, so skip for now.
-
-  // Center the VU cluster (LEDs + labels) based on its original anchor at x=169.
-  const int vuClusterW = 155; // approx width of the VU elements
+  // VU cluster centered
+  const int vuClusterW = S(155);
+  const int baseVuX = S(169);
   const int newVuX = (W - vuClusterW) / 2;
-  const int dx = newVuX - 169;
-  if(dx != 0) {
-    if(g->LEDs_dark)  g->LEDs_dark->position(171 + dx, 115);
-    if(g->LEDs_light) g->LEDs_light->position(169 + dx, 111);
-    if(g->VU_Text)    g->VU_Text->position(169 + dx, 128);
-    if(g->R_VU)       g->R_VU->position(150 + dx, 118);
-    if(g->L_VU)       g->L_VU->position(150 + dx, 142);
+  const int dx = newVuX - baseVuX;
+
+  // LED layout + scaling
+  const int ledSz = S(11);
+  const int ledStep = S(16);
+  const int ledStepWide = S(22); // where the original layout jumps (251 -> 273)
+
+  const int baseXs[9] = {171,187,203,219,235,251,273,289,308};
+  const int yRight = 118;
+  const int yLeft  = 142;
+
+  Fl_Box* rightDark[9]  = {g->right_1_dark,g->right_2_dark,g->right_3_dark,g->right_4_dark,g->right_5_dark,g->right_6_dark,g->right_7_dark,g->right_8_dark,g->right_9_dark};
+  Fl_Box* leftDark[9]   = {g->left_1_dark,g->left_2_dark,g->left_3_dark,g->left_4_dark,g->left_5_dark,g->left_6_dark,g->left_7_dark,g->left_8_dark,g->left_9_dark};
+  Fl_Box* rightLight[9] = {g->right_1_light,g->right_2_light,g->right_3_light,g->right_4_light,g->right_5_light,g->right_6_light,g->right_7_light,g->right_8_light,g->right_9_light};
+  Fl_Box* leftLight[9]  = {g->left_1_light,g->left_2_light,g->left_3_light,g->left_4_light,g->left_5_light,g->left_6_light,g->left_7_light,g->left_8_light,g->left_9_light};
+
+  // Scale images for LEDs (dark + light)
+  Fl_Image* gDark  = cached_copy(image_green_dark(),  ledSz, ledSz);
+  Fl_Image* oDark  = cached_copy(image_orange_dark(), ledSz, ledSz);
+  Fl_Image* rDark  = cached_copy(image_red_dark(),    ledSz, ledSz);
+  Fl_Image* gLight = cached_copy(image_green_light(), ledSz, ledSz);
+  Fl_Image* oLight = cached_copy(image_orange_light(),ledSz, ledSz);
+  Fl_Image* rLight = cached_copy(image_red_light(),  ledSz, ledSz);
+
+  for(int i=0;i<9;i++) {
+    const int x = S(baseXs[i]) + dx;
+    const int ry = S(yRight);
+    const int ly = S(yLeft);
+
+    if(rightDark[i])  { rightDark[i]->resize(x, ry, ledSz, ledSz); }
+    if(leftDark[i])   { leftDark[i]->resize(x, ly, ledSz, ledSz); }
+    if(rightLight[i]) { rightLight[i]->resize(x, ry, ledSz, ledSz); }
+    if(leftLight[i])  { leftLight[i]->resize(x, ly, ledSz, ledSz); }
+
+    // Assign the scaled images (keep coloring consistent with original thresholds)
+    if(rightDark[i])  rightDark[i]->image( (i < 6) ? gDark : (i < 8) ? oDark : rDark );
+    if(leftDark[i])   leftDark[i]->image(  (i < 6) ? gDark : (i < 8) ? oDark : rDark );
+    if(rightLight[i]) rightLight[i]->image((i < 6) ? gLight: (i < 8) ? oLight: rLight);
+    if(leftLight[i])  leftLight[i]->image( (i < 6) ? gLight: (i < 8) ? oLight: rLight);
   }
 
+  // Resize LED groups to enclose their children
+  const int ledX0 = S(169) + dx;
+  const int ledY0 = S(111);
+  const int ledW  = (S(308) - S(169)) + ledSz;
+  const int ledH  = (S(142) - S(111)) + ledSz;
+  if(g->LEDs_light) g->LEDs_light->resize(ledX0, ledY0, ledW, ledH);
+  if(g->LEDs_dark)  g->LEDs_dark->resize(S(171) + dx, S(115), ledW - S(2), ledH - S(4));
+
+  // VU text image scaling
+  if(g->VU_Text) {
+    g->VU_Text->resize(S(169) + dx, S(128), S(154), S(17));
+    g->VU_Text->image(cached_copy(image_VU_text(), S(157), S(10)));
+  }
+
+  // Other VU labels
+  if(g->R_VU)       g->R_VU->position(S(150) + dx, S(118));
+  if(g->L_VU)       g->L_VU->position(S(150) + dx, S(142));
+
+  // --- Font scaling (main window only) -------------------------------------
+  int fs14 = (int)(14 * s + 0.5f);
+  if(fs14 < 11) fs14 = 11;
+  if(fs14 > 26) fs14 = 26;
+
+  int fs10 = (int)(10 * s + 0.5f);
+  if(fs10 < 9) fs10 = 9;
+  if(fs10 > 22) fs10 = 22;
+
+  if(g->slider_gain) g->slider_gain->labelsize(fs14);
+  if(g->lcd)         g->lcd->labelsize(fs14);
+  if(g->button_cfg)  g->button_cfg->labelsize(fs14);
+  if(g->button_info) g->button_info->labelsize(fs10);
+  if(g->R_VU)        g->R_VU->labelsize(fs14);
+  if(g->L_VU)        g->L_VU->labelsize(fs14);
+  if(g->label_minus24db) g->label_minus24db->labelsize(fs10);
+  if(g->label_plus24db)  g->label_plus24db->labelsize(fs10);
+
+  // NOTE: LED images are currently fixed-size bitmaps. We'll scale them next;
+  // doing so correctly needs caching to avoid leaking a new Fl_Image per resize.
+
+  #undef S
   win->redraw();
 }
 
@@ -1199,20 +1329,20 @@ flgui::flgui() {
       L_VU->labelfont(1);
       L_VU->labelsize(11);
     } // Fl_Box* L_VU
-    { Fl_Box* o = new Fl_Box(10, 167, 30, 16, "-24dB");
-      o->labelfont(1);
-      o->labelsize(10);
-    } // Fl_Box* o
-    { Fl_Box* o = new Fl_Box(390, 167, 30, 16, "+24dB");
-      o->labelfont(1);
-      o->labelsize(10);
-    } // Fl_Box* o
+    { label_minus24db = new Fl_Box(10, 167, 30, 16, "-24dB");
+      label_minus24db->labelfont(1);
+      label_minus24db->labelsize(10);
+    } // Fl_Box* label_minus24db
+    { label_plus24db = new Fl_Box(390, 167, 30, 16, "+24dB");
+      label_plus24db->labelfont(1);
+      label_plus24db->labelsize(10);
+    } // Fl_Box* label_plus24db
     // Allow the main window to scale (especially width). The original GUI was hard-locked to 430px.
     // Keep a sane minimum, but do not set a max size.
     window_main->size_range(430, 155);
     window_main->end();
   } // Fl_My_Double_Window* window_main
-  { window_cfg = new Fl_My_Double_Window(324, 511, "butt settings");
+  { window_cfg = new Fl_My_Double_Window(324, 511, "bnbutt settings");
     window_cfg->box(FL_FLAT_BOX);
     window_cfg->color(FL_BACKGROUND_COLOR);
     window_cfg->selection_color(FL_BACKGROUND_COLOR);
@@ -1516,8 +1646,8 @@ flgui::flgui() {
           } // Fl_Button* button_gui_bg_color
           o->end();
         } // Fl_Group* o
-        { check_gui_attach = new Fl_Check_Button(26, 163, 245, 22, "Attach this window to butt window");
-          check_gui_attach->tooltip("Attach this window to the butt window");
+        { check_gui_attach = new Fl_Check_Button(26, 163, 245, 22, "Attach this window to bnbutt window");
+          check_gui_attach->tooltip("Attach this window to the bnbutt window");
           check_gui_attach->down_box(FL_DOWN_BOX);
           check_gui_attach->callback((Fl_Callback*)cb_check_gui_attach);
         } // Fl_Check_Button* check_gui_attach

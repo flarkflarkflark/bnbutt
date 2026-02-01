@@ -121,31 +121,34 @@
 #define HAVE__BOOL 1
 
 /* Name of package */
-#define PACKAGE "butt"
+#define PACKAGE "bnbutt"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "BUG-REPORT-ADDRESS"
+#define PACKAGE_BUGREPORT "https://beatsnbreaks.nl"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "butt"
+#define PACKAGE_NAME "bnbutt"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "butt 0.1.16"
+#define PACKAGE_STRING "bnbutt 0.1"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "butt"
+#define PACKAGE_TARNAME "bnbutt"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL ""
+#define PACKAGE_URL "https://beatsnbreaks.nl"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.16"
+#define PACKAGE_VERSION "0.1"
+
+/* Full product name */
+#define BNBUTT_FULLNAME "Beats 'n Breaks Use This Tool"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.1.16"
+#define VERSION "0.1"
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */

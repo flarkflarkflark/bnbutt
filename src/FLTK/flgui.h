@@ -108,6 +108,8 @@ public:
   Fl_Box *VU_Text;
   Fl_Box *R_VU;
   Fl_Box *L_VU;
+  Fl_Box *label_minus24db;
+  Fl_Box *label_plus24db;
   Fl_My_Double_Window *window_cfg;
 private:
   inline void cb_window_cfg_i(Fl_My_Double_Window*, void*);
