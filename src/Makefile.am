@@ -4,9 +4,11 @@ AM_CPPFLAGS = -IFLTK
 
 if DARWIN
 # FLTK's Cocoa backend pulls in Objective-C headers; compile as Objective-C++ on macOS.
-# IMPORTANT: use per-target CXXFLAGS so the linker doesn't get `-x objective-c++` (it would then
-# try to parse .o files as source and fail with “source file is not valid UTF-8”).
+# Per-target CXXFLAGS keeps -x objective-c++ out of AM_CXXFLAGS, but automake still
+# puts butt_CXXFLAGS into the generated butt_LINK rule.  Add -x none via LDFLAGS so the
+# linker sees it *after* -x objective-c++ and stops treating .o files as source.
 butt_CXXFLAGS = -x objective-c++
+butt_LDFLAGS = -x none
 endif
 
 #
