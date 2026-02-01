@@ -44,12 +44,12 @@ jobs:
       - name: Package portable tar.gz
         run: |
           TAG="${GITHUB_REF_NAME:-dev}"
-          mkdir -p pkg/butt
-          cp src/butt pkg/butt/
-          cp icons/butt.desktop pkg/butt/
-          cp icons/icon_256x256.png pkg/butt/butt.png
-          cp README.md pkg/butt/ 2>/dev/null || true
-          tar -czf "butt-${TAG}-linux-x86_64.tar.gz" -C pkg butt
+          mkdir -p pkg/bnbutt
+          cp src/butt pkg/bnbutt/
+          cp icons/butt.desktop pkg/bnbutt/
+          cp icons/icon_256x256.png pkg/bnbutt/butt.png
+          cp README.md pkg/bnbutt/ 2>/dev/null || true
+          tar -czf "bnbutt-${TAG}-linux-x86_64.tar.gz" -C pkg bnbutt
 
       - name: Build AppImage
         run: |
@@ -70,7 +70,7 @@ jobs:
           cp icons/icon_256x256.png  AppDir/usr/share/icons/hicolor/256x256/apps/butt.png
 
           # Build AppImage
-          OUTPUT="butt-${TAG}-x86_64.AppImage" \
+          OUTPUT="bnbutt-${TAG}-x86_64.AppImage" \
           ./linuxdeploy --appdir AppDir \
             --desktop-file AppDir/usr/share/applications/butt.desktop \
             --icon-file AppDir/usr/share/icons/hicolor/256x256/apps/butt.png \
@@ -81,8 +81,8 @@ jobs:
         with:
           name: linux-packages
           path: |
-            butt-*-linux-x86_64.tar.gz
-            butt-*-x86_64.AppImage
+            bnbutt-*-linux-x86_64.tar.gz
+            bnbutt-*-x86_64.AppImage
 
   # ---------------------------------------------------------------------------
   #  macOS  –  .app bundle inside a .zip
@@ -140,13 +140,13 @@ jobs:
           PLIST
 
           # Zip the .app bundle
-          zip -r "butt-${TAG}-macos.zip" "${BUNDLE}"
+          zip -r "bnbutt-${TAG}-macos.zip" "${BUNDLE}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: macos-packages
-          path: butt-*-macos.zip
+          path: bnbutt-*-macos.zip
 
   # ---------------------------------------------------------------------------
   #  Windows (MSYS2/MinGW64)  –  portable .zip with exe + DLLs
@@ -199,13 +199,13 @@ jobs:
           done
 
           cd pkg
-          zip -r "../butt-${TAG}-windows-x64-portable.zip" .
+          zip -r "../bnbutt-${TAG}-windows-x64-portable.zip" .
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-packages
-          path: butt-*-windows-x64-portable.zip
+          path: bnbutt-*-windows-x64-portable.zip
 
   # ---------------------------------------------------------------------------
   #  Release  –  create GitHub release and attach all artifacts (tag pushes only)
