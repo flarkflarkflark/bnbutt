@@ -4,7 +4,9 @@ AM_CPPFLAGS = -IFLTK
 
 if DARWIN
 # FLTK's Cocoa backend pulls in Objective-C headers; compile as Objective-C++ on macOS.
-AM_CXXFLAGS = -x objective-c++
+# IMPORTANT: use per-target CXXFLAGS so the linker doesn't get `-x objective-c++` (it would then
+# try to parse .o files as source and fail with “source file is not valid UTF-8”).
+butt_CXXFLAGS = -x objective-c++
 endif
 
 #
