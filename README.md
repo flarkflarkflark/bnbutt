@@ -1,26 +1,74 @@
-# Broadcast Using This Tool
+# bnbutt — Beats 'n Breaks Use This Tool
 
-butt (broadcast using this tool) is an easy to use, multi OS streaming tool. It supports ShoutCast and IceCast and runs on Linux, MacOS and Windows. The main purpose of butt is to stream live audio data from your computers Mic or Line input to an Shoutcast or Icecast server. Recording is also possible. It is NOT intended to be a server by itself or automatically stream a set of audio files.
+**bnbutt** is a fork of **butt** (Broadcast Using This Tool): a lightweight streaming/recording app for **Icecast** and **Shoutcast**, available on **Windows, Linux, and macOS**.
 
-## This Repository
+This fork focuses on:
+- A **better, responsive main window UI** (scales on small + large monitors)
+- A **separate config file** so it can coexist with butt
+- Beats ’n Breaks branding (logo/icons)
 
-This repository has been created out of the need to have butt read audio input from other channels than the first two of an audio device.
+## Downloads
 
-## Compiling
+Releases are built via GitHub Actions.
 
-Theoretically it should compile the same way as before; install dependencies, hit `./configure && make` and you should be all set.
+- Go to: **Releases** → download your platform build
+- Tagging `v*` (e.g. `v0.1`) triggers a full build.
 
-However, for me those instructions didn’t work on macOS Sierra. Here is how I did make it work (together with a couple of fixes that are in the repository):
+## Config file
 
+bnbutt uses its **own** config file:
+- **Windows:** `bnbuttrc`
+- **Linux/macOS:** `.bnbuttrc`
+
+So you can install/run it **next to** butt without settings colliding.
+
+## Building from source
+
+### Linux
+
+```bash
+sudo apt-get install -y \
+  build-essential autoconf automake libtool pkg-config \
+  libfltk1.3-dev portaudio19-dev \
+  libogg-dev libvorbis-dev libopus-dev libflac-dev \
+  libmp3lame-dev libsamplerate0-dev libfdk-aac-dev
+
+autoreconf -fi
+./configure
+make -j"$(nproc)"
 ```
-$ CPPFLAGS="-ObjC++ -I../xcode/include" ./configure
-$ make
+
+### macOS (Homebrew)
+
+```bash
+brew install autoconf automake libtool pkg-config \
+  fltk portaudio libogg libvorbis opus flac lame libsamplerate fdk-aac
+
+autoreconf -fi
+./configure
+make -j"$(sysctl -n hw.ncpu)"
 ```
 
-I have no idea how to fix the underlying issues because frankly, I despise C or C++ or whatever unholy mongrel of a language this tool is written in.
+### Windows (MSYS2/MinGW64)
 
-## Closing Remarks
+Use **MSYS2** MinGW64 and install deps (see `.github/workflows/release.yml`), then:
 
-Anyway, this works for me. It doesn’t seem to crash, the choices I make are persisted, and my world has gotten a little bit better because of this.
+```bash
+autoreconf -fi
+./configure
+make -j"$(nproc)"
+```
 
-Big thanks to Daniel Nöthen for creating butt in the first place; without him I’d have nothing to patch.
+## Packaging
+
+CI produces:
+- **Windows:** portable zip + NSIS installer
+- **Linux:** AppImage + Flatpak bundle
+- **macOS:** .app (zip) + DMG
+
+See: `.github/workflows/release.yml`
+
+## Credits
+
+- Original project: **butt** by Daniel Nöthen and contributors
+- This fork: **bnbutt** (Beats ’n Breaks)
