@@ -1164,7 +1164,9 @@ flgui::flgui() {
       o->labelfont(1);
       o->labelsize(10);
     } // Fl_Box* o
-    window_main->size_range(430, 155, 430);
+    // Allow the main window to scale (especially width). The original GUI was hard-locked to 430px.
+    // Keep a sane minimum, but do not set a max size.
+    window_main->size_range(430, 155);
     window_main->end();
   } // Fl_My_Double_Window* window_main
   { window_cfg = new Fl_My_Double_Window(324, 511, "butt settings");
