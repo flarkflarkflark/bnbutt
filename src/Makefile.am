@@ -2,12 +2,9 @@
 
 AM_CPPFLAGS = -IFLTK
 
-# Ensure the variable exists before any conditional '+=' (Automake requirement)
-AM_CXXFLAGS =
-
 if DARWIN
 # FLTK's Cocoa backend pulls in Objective-C headers; compile as Objective-C++ on macOS.
-AM_CXXFLAGS += -x objective-c++
+AM_CXXFLAGS = -x objective-c++
 endif
 
 #
