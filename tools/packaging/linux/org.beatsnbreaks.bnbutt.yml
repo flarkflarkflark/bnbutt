@@ -1,0 +1,24 @@
+app-id: org.beatsnbreaks.bnbutt
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: bnbutt
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  - --share=network
+modules:
+  - name: bnbutt
+    buildsystem: simple
+    build-commands:
+      - autoreconf -fi
+      - ./configure
+      - make -j$(nproc)
+      - install -Dm755 src/butt /app/bin/bnbutt || install -Dm755 src/bnbutt /app/bin/bnbutt
+      - install -Dm644 assets/icons/png/bnbutt-512.png /app/share/icons/hicolor/512x512/apps/bnbutt.png
+      - install -Dm644 tools/packaging/linux/bnbutt.desktop /app/share/applications/bnbutt.desktop
+    sources:
+      - type: dir
+        path: .

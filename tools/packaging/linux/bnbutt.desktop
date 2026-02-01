@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=bnbutt
+Comment=Beats 'n Breaks Use This Tool
+Exec=bnbutt
+Icon=bnbutt
+Terminal=false
+Categories=Audio;AudioVideo;

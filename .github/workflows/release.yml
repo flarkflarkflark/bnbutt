@@ -1,0 +1,172 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build deps (apt)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential autoconf automake libtool pkg-config \
+            libfltk1.3-dev libportaudio2 portaudio19-dev \
+            libogg-dev libvorbis-dev libopus-dev libflac-dev \
+            libmp3lame-dev libsamplerate0-dev libfdk-aac-dev \
+            zsync file
+
+      - name: Build (autotools)
+        run: |
+          autoreconf -fi
+          ./configure
+          make -j"$(nproc)"
+
+      - name: Stage AppDir
+        run: |
+          mkdir -p AppDir/usr/bin
+          cp -v src/butt AppDir/usr/bin/bnbutt || cp -v src/bnbutt AppDir/usr/bin/bnbutt || true
+          # fallback: locate the built binary
+          if [ ! -f AppDir/usr/bin/bnbutt ]; then
+            BIN=$(find . -maxdepth 3 -type f -perm -111 -name 'butt' -o -name 'bnbutt' | head -n1)
+            echo "Found binary: $BIN"
+            cp -v "$BIN" AppDir/usr/bin/bnbutt
+          fi
+          install -Dm644 assets/icons/png/bnbutt-512.png AppDir/usr/share/icons/hicolor/512x512/apps/bnbutt.png
+          install -Dm644 tools/packaging/linux/bnbutt.desktop AppDir/usr/share/applications/bnbutt.desktop
+
+      - name: Build AppImage
+        run: |
+          chmod +x tools/packaging/linux/build_appimage.sh
+          tools/packaging/linux/build_appimage.sh
+
+      - name: Build Flatpak
+        run: |
+          sudo apt-get install -y flatpak flatpak-builder
+          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          chmod +x tools/packaging/linux/build_flatpak.sh
+          tools/packaging/linux/build_flatpak.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/*.AppImage
+            dist/*.flatpak
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          msystem: MINGW64
+          install: >-
+            git
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-make
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-autotools
+            mingw-w64-x86_64-fltk
+            mingw-w64-x86_64-portaudio
+            mingw-w64-x86_64-libogg
+            mingw-w64-x86_64-libvorbis
+            mingw-w64-x86_64-opus
+            mingw-w64-x86_64-flac
+            mingw-w64-x86_64-lame
+            mingw-w64-x86_64-libsamplerate
+            mingw-w64-x86_64-fdk-aac
+
+      - name: Build (MSYS2)
+        shell: msys2 {0}
+        run: |
+          autoreconf -fi
+          ./configure
+          make -j"$(nproc)"
+
+      - name: Package portable zip
+        shell: msys2 {0}
+        run: |
+          mkdir -p dist
+          BIN=$(find . -maxdepth 3 -type f -name '*.exe' | head -n1)
+          echo "Using binary: $BIN"
+          cp -v "$BIN" dist/bnbutt.exe
+          cp -v assets/icons/bnbutt.ico dist/bnbutt.ico || true
+          7z a dist/bnbutt-windows-portable.zip dist/bnbutt.exe dist/bnbutt.ico
+
+      - name: Build installer (NSIS)
+        run: |
+          choco install nsis -y
+          makensis tools\\packaging\\windows\\bnbutt.nsi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/*.zip
+            dist/*setup*.exe
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps (brew)
+        run: |
+          brew update
+          brew install autoconf automake libtool pkg-config \
+            fltk portaudio libogg libvorbis opus flac lame libsamplerate fdk-aac
+
+      - name: Build (autotools)
+        run: |
+          autoreconf -fi
+          ./configure
+          make -j"$(sysctl -n hw.ncpu)"
+
+      - name: Create .app bundle
+        run: |
+          chmod +x tools/packaging/macos/make_app.sh
+          tools/packaging/macos/make_app.sh
+
+      - name: Create DMG
+        run: |
+          brew install create-dmg
+          chmod +x tools/packaging/macos/make_dmg.sh
+          tools/packaging/macos/make_dmg.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            dist/*.dmg
+            dist/*.zip
+
+  release:
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/**
