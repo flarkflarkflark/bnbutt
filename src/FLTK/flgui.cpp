@@ -907,6 +907,48 @@ void flgui::cb_button_add_icy_save(Fl_Button* o, void* v) {
   ((flgui*)(o->parent()->user_data()))->cb_button_add_icy_save_i(o,v);
 }
 
+static void window_main_resized(Fl_My_Double_Window* win, void* user) {
+  flgui* g = (flgui*)user;
+  if(!g || !g->window_main) return;
+
+  const int W = win->w();
+  const int H = win->h();
+
+  // Keep original top layout height at 195px (controls), and let the log expand.
+  const int topH = 195;
+
+  // LCD spans the window width (with 10px margins).
+  if(g->lcd) g->lcd->resize(10, 9, W - 20, 95);
+
+  // Gain slider expands horizontally.
+  if(g->slider_gain) g->slider_gain->resize(50, 168, W - 95, 15);
+
+  // Right-anchored buttons.
+  if(g->button_cfg)  g->button_cfg->position(W - 10 - 68, 114);
+  if(g->button_info) g->button_info->position(W - 10 - 68, 143);
+
+  // Info output is the resizable area.
+  if(g->info_output) g->info_output->resize(0, topH, W, H - topH);
+
+  // Right-side +24dB label anchored to the right.
+  // (The -24dB label stays on the left at x=10)
+  // NOTE: We don't store a pointer to that Fl_Box, so skip for now.
+
+  // Center the VU cluster (LEDs + labels) based on its original anchor at x=169.
+  const int vuClusterW = 155; // approx width of the VU elements
+  const int newVuX = (W - vuClusterW) / 2;
+  const int dx = newVuX - 169;
+  if(dx != 0) {
+    if(g->LEDs_dark)  g->LEDs_dark->position(171 + dx, 115);
+    if(g->LEDs_light) g->LEDs_light->position(169 + dx, 111);
+    if(g->VU_Text)    g->VU_Text->position(169 + dx, 128);
+    if(g->R_VU)       g->R_VU->position(150 + dx, 118);
+    if(g->L_VU)       g->L_VU->position(150 + dx, 142);
+  }
+
+  win->redraw();
+}
+
 flgui::flgui() {
   { window_main = new Fl_My_Double_Window(430, 380);
     window_main->box(FL_FLAT_BOX);
@@ -917,6 +959,7 @@ flgui::flgui() {
     window_main->labelsize(14);
     window_main->labelcolor(FL_FOREGROUND_COLOR);
     window_main->callback((Fl_Callback*)cb_window_main, (void*)(this));
+    window_main->set_resize_callback(window_main_resized, (void*)(this));
     window_main->align(Fl_Align(FL_ALIGN_TOP));
     window_main->when(FL_WHEN_RELEASE);
     { slider_gain = new Fl_My_Value_Slider(50, 168, 335, 15);

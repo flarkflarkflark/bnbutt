@@ -17,6 +17,14 @@
 
 class Fl_My_Double_Window : public Fl_Double_Window {
     public:
+        typedef void (*resize_cb_t)(Fl_My_Double_Window* win, void* user);
+
+        // Optional resize callback hook (FLTK has a virtual resize(), but no signal-style callback).
+        void set_resize_callback(resize_cb_t cb, void* user) {
+            resize_cb_ = cb;
+            resize_user_ = user;
+        }
+
         void stay_on_top(int ontop) {
 #ifdef _WIN32
             SetWindowPos(fl_xid(this), ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
@@ -52,12 +60,23 @@ class Fl_My_Double_Window : public Fl_Double_Window {
         }
 
         Fl_My_Double_Window(int W, int H, const char *l = 0)
-            : Fl_Double_Window(W,H,l) {}
+            : Fl_Double_Window(W,H,l), resize_cb_(0), resize_user_(0) {}
 
         Fl_My_Double_Window(int X, int Y, int W, int H, const char *l = 0)
-            : Fl_Double_Window(X,Y,W,H,l) {}
+            : Fl_Double_Window(X,Y,W,H,l), resize_cb_(0), resize_user_(0) {}
+
+        void resize(int X, int Y, int W, int H) override {
+            Fl_Double_Window::resize(X, Y, W, H);
+            if(resize_cb_) {
+                resize_cb_(this, resize_user_);
+            }
+        }
 
         ~Fl_My_Double_Window() { hide(); }
+
+    private:
+        resize_cb_t resize_cb_;
+        void* resize_user_;
 };
 
 #endif //FL_MY_DOUBLE_WINDOW_H
