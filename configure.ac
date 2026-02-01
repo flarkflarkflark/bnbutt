@@ -13,8 +13,21 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CXX
 AC_PROG_CC
 
-LDFLAGS="$LDFLAGS -L/usr/local/lib -L/opt/homebrew/lib"
-CPPFLAGS="$CPPFLAGS -I/opt/homebrew/include"
+AC_CANONICAL_HOST
+
+LDFLAGS="$LDFLAGS -L/usr/local/lib"
+
+case "$host_os" in
+  darwin*)
+    # Homebrew prefix on modern macOS CI
+    if test -d /opt/homebrew; then
+      LDFLAGS="$LDFLAGS -L/opt/homebrew/lib"
+      CPPFLAGS="$CPPFLAGS -I/opt/homebrew/include"
+    fi
+    ;;
+  *)
+    ;;
+esac
 
 # Checks for libraries.
 AC_CHECK_LIB([ogg], [ogg_stream_init], [],

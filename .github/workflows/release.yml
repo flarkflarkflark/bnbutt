@@ -135,7 +135,8 @@ jobs:
         run: |
           autoreconf -fi
           BREW_PREFIX="$(brew --prefix)"
-          CPPFLAGS="-I${BREW_PREFIX}/include" LDFLAGS="-L${BREW_PREFIX}/lib" ./configure
+          # Fl_My_Double_Window.H pulls in Cocoa headers → compile as ObjC++
+          CXXFLAGS="-ObjC++" CPPFLAGS="-I${BREW_PREFIX}/include" LDFLAGS="-L${BREW_PREFIX}/lib" ./configure
           make -j"$(sysctl -n hw.ncpu)"
 
       - name: Create .app bundle
