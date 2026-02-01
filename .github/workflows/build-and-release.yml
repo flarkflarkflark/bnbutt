@@ -6,39 +6,158 @@ on:
       - 'v*'
   workflow_dispatch:
 
-jobs:
-  build:
-    name: build (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+permissions:
+  contents: write
 
+env:
+  APP_NAME: butt
+  APP_DISPLAY: "butt - broadcast using this tool"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  #  Linux  –  binary tar.gz + AppImage
+  # ---------------------------------------------------------------------------
+  build-linux:
+    name: Linux
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install deps (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Install build deps
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            autoconf automake libtool pkg-config \
-            g++ make \
-            libogg-dev libvorbis-dev libvorbisenc2 libvorbisenc2 \
-            libopus-dev libmp3lame-dev libflac-dev portaudio19-dev libsamplerate0-dev libfdk-aac-dev \
+            autoconf automake libtool pkg-config g++ make \
+            libogg-dev libvorbis-dev libvorbisenc2 \
+            libopus-dev libmp3lame-dev libflac-dev portaudio19-dev \
+            libsamplerate0-dev libfdk-aac-dev \
             libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev \
-            libfltk1.3-dev
+            libfltk1.3-dev \
+            file desktop-file-utils libfuse2
 
-      - name: Install deps (macOS)
-        if: runner.os == 'macOS'
+      - name: Build
+        run: |
+          autoreconf -fi
+          ./configure --prefix=/usr
+          make -j"$(nproc)"
+
+      - name: Package portable tar.gz
+        run: |
+          TAG="${GITHUB_REF_NAME:-dev}"
+          mkdir -p pkg/butt
+          cp src/butt pkg/butt/
+          cp icons/butt.desktop pkg/butt/
+          cp icons/icon_256x256.png pkg/butt/butt.png
+          cp README.md pkg/butt/ 2>/dev/null || true
+          tar -czf "butt-${TAG}-linux-x86_64.tar.gz" -C pkg butt
+
+      - name: Build AppImage
+        run: |
+          TAG="${GITHUB_REF_NAME:-dev}"
+
+          # Fetch linuxdeploy
+          curl -fSL -o linuxdeploy \
+            https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy
+
+          # Prepare AppDir
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/applications
+          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+
+          cp src/butt                AppDir/usr/bin/
+          cp icons/butt.desktop      AppDir/usr/share/applications/
+          cp icons/icon_256x256.png  AppDir/usr/share/icons/hicolor/256x256/apps/butt.png
+
+          # Build AppImage
+          OUTPUT="butt-${TAG}-x86_64.AppImage" \
+          ./linuxdeploy --appdir AppDir \
+            --desktop-file AppDir/usr/share/applications/butt.desktop \
+            --icon-file AppDir/usr/share/icons/hicolor/256x256/apps/butt.png \
+            --output appimage
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-packages
+          path: |
+            butt-*-linux-x86_64.tar.gz
+            butt-*-x86_64.AppImage
+
+  # ---------------------------------------------------------------------------
+  #  macOS  –  .app bundle inside a .zip
+  # ---------------------------------------------------------------------------
+  build-macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
         run: |
           brew update
           brew install autoconf automake libtool pkg-config \
             fltk libogg libvorbis opus lame flac portaudio libsamplerate fdk-aac
 
-      - name: Install deps (Windows/MSYS2)
-        if: runner.os == 'Windows'
+      - name: Build
+        run: |
+          autoreconf -fi
+          BREW_PREFIX="$(brew --prefix)"
+          export CPPFLAGS="-I${BREW_PREFIX}/include"
+          export LDFLAGS="-L${BREW_PREFIX}/lib"
+          ./configure
+          make -j"$(sysctl -n hw.ncpu)"
+
+      - name: Create .app bundle
+        run: |
+          TAG="${GITHUB_REF_NAME:-dev}"
+          BUNDLE="butt.app"
+
+          mkdir -p "${BUNDLE}/Contents/MacOS"
+          mkdir -p "${BUNDLE}/Contents/Resources"
+
+          cp src/butt "${BUNDLE}/Contents/MacOS/butt"
+          cp icons/butt.icns "${BUNDLE}/Contents/Resources/butt.icns"
+
+          cat > "${BUNDLE}/Contents/Info.plist" << 'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+            "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key>        <string>butt</string>
+            <key>CFBundleName</key>              <string>butt</string>
+            <key>CFBundleDisplayName</key>       <string>butt</string>
+            <key>CFBundleIdentifier</key>        <string>org.danielnoethen.butt</string>
+            <key>CFBundleIconFile</key>          <string>butt</string>
+            <key>CFBundlePackageType</key>       <string>APPL</string>
+            <key>CFBundleSignature</key>         <string>????</string>
+            <key>NSHighResolutionCapable</key>   <true/>
+            <key>NSMicrophoneUsageDescription</key>
+            <string>butt needs microphone access to broadcast audio.</string>
+          </dict>
+          </plist>
+          PLIST
+
+          # Zip the .app bundle
+          zip -r "butt-${TAG}-macos.zip" "${BUNDLE}"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-packages
+          path: butt-*-macos.zip
+
+  # ---------------------------------------------------------------------------
+  #  Windows (MSYS2/MinGW64)  –  portable .zip with exe + DLLs
+  # ---------------------------------------------------------------------------
+  build-windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
           update: true
@@ -56,36 +175,60 @@ jobs:
             mingw-w64-x86_64-libsndfile
             mingw-w64-x86_64-libsamplerate
             mingw-w64-x86_64-fdk-aac
-            make
+            make zip
 
-      - name: Build (Linux/macOS)
-        if: runner.os != 'Windows'
-        run: |
-          autoreconf -fi
-
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            BREW_PREFIX="$(brew --prefix)"
-            export CPPFLAGS="-I${BREW_PREFIX}/include"
-            export LDFLAGS="-L${BREW_PREFIX}/lib"
-          fi
-
-          ./configure
-          make -j"$(getconf _NPROCESSORS_ONLN)"
-
-      - name: Build (Windows/MSYS2)
-        if: runner.os == 'Windows'
+      - name: Build
         shell: msys2 {0}
         run: |
           autoreconf -fi
           ./configure
           make -j"$(nproc)"
 
-      - name: Upload build artifacts
+      - name: Package portable zip
+        shell: msys2 {0}
+        run: |
+          TAG="${GITHUB_REF_NAME:-dev}"
+          mkdir -p pkg
+
+          cp src/butt.exe pkg/
+
+          # Collect runtime DLLs the executable needs
+          MINGW_BIN="/mingw64/bin"
+          for dll in $(ldd src/butt.exe | grep "$MINGW_BIN" | awk '{print $3}'); do
+            cp "$dll" pkg/
+          done
+
+          cd pkg
+          zip -r "../butt-${TAG}-windows-x64-portable.zip" .
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: butt-${{ matrix.os }}-${{ github.ref_name }}
-          path: |
-            src/butt*
-            **/*.exe
-            **/*.app
-          if-no-files-found: warn
+          name: windows-packages
+          path: butt-*-windows-x64-portable.zip
+
+  # ---------------------------------------------------------------------------
+  #  Release  –  create GitHub release and attach all artifacts (tag pushes only)
+  # ---------------------------------------------------------------------------
+  release:
+    name: Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -lhR dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*
