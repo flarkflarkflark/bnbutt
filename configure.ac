@@ -5,6 +5,8 @@ AC_PREREQ([2.68])
 AC_INIT([butt], [0.1.16], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 
+AC_CANONICAL_HOST
+
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
@@ -55,6 +57,11 @@ AC_CHECK_HEADER([winsock2.h],
 		],
 	       )
 AM_CONDITIONAL(WINDOWS, test "$host_os" = "windows")
+case "$host_os" in
+  darwin*) is_darwin=yes ;;
+  *)       is_darwin=no ;;
+esac
+AM_CONDITIONAL(DARWIN, test "x$is_darwin" = "xyes")
 
 AC_CHECK_PROG([FLTKCONFIG],[fltk-config], [fltk-config])
 

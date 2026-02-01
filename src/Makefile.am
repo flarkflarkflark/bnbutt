@@ -2,6 +2,11 @@
 
 AM_CPPFLAGS = -IFLTK
 
+if DARWIN
+# FLTK's Cocoa backend pulls in Objective-C headers; compile as Objective-C++ on macOS.
+AM_CXXFLAGS += -x objective-c++
+endif
+
 #
 # # this lists the binaries to produce, the (non-PHONY, binary) targets in
 # # the previous manual Makefile
