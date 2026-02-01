@@ -16,7 +16,16 @@ fi
 # Build AppImage from AppDir
 export VERSION="${GITHUB_REF_NAME:-0.1}"
 
-"$LINUXDEPLOY" --appdir AppDir --output appimage
+# NOTE: GitHub Actions runners typically don't have FUSE enabled for AppImage execution.
+# Use --appimage-extract and run the extracted AppRun to avoid FUSE.
+EXTRACT_DIR="$ROOT/tools/packaging/linux/linuxdeploy-extracted"
+rm -rf "$EXTRACT_DIR"
+mkdir -p "$EXTRACT_DIR"
+
+"$LINUXDEPLOY" --appimage-extract >/dev/null
+mv -v squashfs-root "$EXTRACT_DIR/squashfs-root"
+
+"$EXTRACT_DIR/squashfs-root/AppRun" --appdir AppDir --output appimage
 
 # linuxdeploy outputs in cwd
 APPIMAGE=$(ls ./*.AppImage | head -n1)
