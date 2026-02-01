@@ -791,11 +791,11 @@ void snd_close(void)
     Pa_CloseStream(stream);
     Pa_Terminate();
 
-    free(srconv_stream.data_in);
-    free(srconv_stream.data_out);
+    free((void*)srconv_stream.data_in);
+    free((void*)srconv_stream.data_out);
 
-    free(srconv_record.data_in);
-    free(srconv_record.data_out);
+    free((void*)srconv_record.data_in);
+    free((void*)srconv_record.data_out);
 
     free(pa_pcm_buf);
     free(encode_buf);

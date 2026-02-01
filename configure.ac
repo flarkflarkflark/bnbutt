@@ -13,7 +13,8 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CXX
 AC_PROG_CC
 
-LDFLAGS="$LDFLAGS -L/usr/local/lib"
+LDFLAGS="$LDFLAGS -L/usr/local/lib -L/opt/homebrew/lib"
+CPPFLAGS="$CPPFLAGS -I/opt/homebrew/include"
 
 # Checks for libraries.
 AC_CHECK_LIB([ogg], [ogg_stream_init], [],

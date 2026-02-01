@@ -134,7 +134,8 @@ jobs:
       - name: Build (autotools)
         run: |
           autoreconf -fi
-          ./configure
+          BREW_PREFIX="$(brew --prefix)"
+          CPPFLAGS="-I${BREW_PREFIX}/include" LDFLAGS="-L${BREW_PREFIX}/lib" ./configure
           make -j"$(sysctl -n hw.ncpu)"
 
       - name: Create .app bundle
