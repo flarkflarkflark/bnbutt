@@ -9,6 +9,6 @@ Exec=butt
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Categories=Sound
+Categories=AudioVideo;Audio;
 StartupNotify=true
 
