@@ -175,6 +175,7 @@ jobs:
             mingw-w64-x86_64-libsndfile
             mingw-w64-x86_64-libsamplerate
             mingw-w64-x86_64-fdk-aac
+            mingw-w64-x86_64-nsis
             make zip
 
       - name: Build
@@ -201,11 +202,20 @@ jobs:
           cd pkg
           zip -r "../bnbutt-${TAG}-windows-x64-portable.zip" .
 
+      - name: Build installer
+        shell: msys2 {0}
+        run: |
+          TAG="${GITHUB_REF_NAME:-dev}"
+          VERSION="${TAG#v}"
+          makensis -DVERSION="${VERSION}" -DPKG_DIR=pkg installer.nsi
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-packages
-          path: bnbutt-*-windows-x64-portable.zip
+          path: |
+            bnbutt-*-windows-x64-portable.zip
+            bnbutt-*-windows-x64-setup.exe
 
   # ---------------------------------------------------------------------------
   #  Release  –  create GitHub release and attach all artifacts (tag pushes only)
