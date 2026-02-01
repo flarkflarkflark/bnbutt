@@ -1,0 +1,8 @@
+autom4te.cache/
+config.guess
+config.sub
+config.h.in~
+configure~
+*.o
+*.exe
+src/butt
