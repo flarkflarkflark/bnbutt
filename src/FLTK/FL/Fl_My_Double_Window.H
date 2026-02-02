@@ -82,17 +82,19 @@ class Fl_My_Double_Window : public Fl_Double_Window {
                 Fl::add_timeout(1, &agent_watchdog_timer);
             }
         }
-        if (event == FL_RESIZE && is_main_window == true) {
-            resize_main_window_layout(w(), h());
-        }
         return Fl_Double_Window::handle(event);
 #else
         Fl_Double_Window::handle(event);
-        if (event == FL_RESIZE && is_main_window == true) {
-            resize_main_window_layout(w(), h());
-        }
         return 0;
 #endif
+    }
+
+    void resize(int X, int Y, int W, int H) override
+    {
+        Fl_Double_Window::resize(X, Y, W, H);
+        if (is_main_window == true) {
+            resize_main_window_layout(w(), h());
+        }
     }
 
     Fl_My_Double_Window(int W, int H, const char *l = 0) : Fl_Double_Window(W, H, l) {}
