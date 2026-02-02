@@ -1,4 +1,4 @@
-// config functions for butt
+// config functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -143,7 +143,7 @@ typedef struct
 
 extern char *cfg_path;      //Path to config file
 extern config_t cfg;        //Holds config parameters
-extern bool unsaved_changes;//is checked when closing butt and informs the user for unsaved changes
+extern bool unsaved_changes;//is checked when closing bnbutt and informs the user for unsaved changes
 
 int cfg_write_file(char *path); //Writes current config_t struct to path or cfg_path if path is NULL
 int cfg_set_values(char *path); //Reads config file from path or cfg_path if path is NULL and fills the config_t struct

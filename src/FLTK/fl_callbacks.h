@@ -1,4 +1,4 @@
-// FLTK callback functions for butt
+// FLTK callback functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //

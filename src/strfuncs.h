@@ -1,4 +1,4 @@
-// string manipulation functions for butt
+// string manipulation functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //

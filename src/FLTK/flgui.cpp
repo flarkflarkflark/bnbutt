@@ -1167,7 +1167,7 @@ flgui::flgui() {
     window_main->size_range(430, 155, 430);
     window_main->end();
   } // Fl_My_Double_Window* window_main
-  { window_cfg = new Fl_My_Double_Window(324, 511, "butt settings");
+  { window_cfg = new Fl_My_Double_Window(324, 511, "bnbutt settings");
     window_cfg->box(FL_FLAT_BOX);
     window_cfg->color(FL_BACKGROUND_COLOR);
     window_cfg->selection_color(FL_BACKGROUND_COLOR);
@@ -1471,8 +1471,8 @@ flgui::flgui() {
           } // Fl_Button* button_gui_bg_color
           o->end();
         } // Fl_Group* o
-        { check_gui_attach = new Fl_Check_Button(26, 163, 245, 22, "Attach this window to butt window");
-          check_gui_attach->tooltip("Attach this window to the butt window");
+        { check_gui_attach = new Fl_Check_Button(26, 163, 245, 22, "Attach this window to bnbutt window");
+          check_gui_attach->tooltip("Attach this window to the bnbutt window");
           check_gui_attach->down_box(FL_DOWN_BOX);
           check_gui_attach->callback((Fl_Callback*)cb_check_gui_attach);
         } // Fl_Check_Button* check_gui_attach

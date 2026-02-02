@@ -1,4 +1,4 @@
-// butt - broadcast using this tool
+// bnbutt - Beats 'n Breaks Use This Tool
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -13,8 +13,8 @@
 // GNU General Public License for more details.
 //
 
-#ifndef BUTT_H
-#define BUTT_H
+#ifndef BNBUTT_H
+#define BNBUTT_H
 
 #include "timer.h"
 #include "lame_encode.h"
@@ -24,9 +24,9 @@
 #include "aac_encode.h"
 
 extern bool record;
-extern bool recording;      //TRUE if butt is recording
-extern bool connected;      //TRUE if butt is connected to server
-extern bool disconnect;     //TRUE if butt should disconnect
+extern bool recording;      //TRUE if bnbutt is recording
+extern bool connected;      //TRUE if bnbutt is connected to server
+extern bool disconnect;     //TRUE if bnbutt should disconnect
 extern bool try_connect;    //but will try to connect to a server while TRUE
 extern bool streaming;
 extern bool song_timeout_running; //TRUE if automatic song updating is running

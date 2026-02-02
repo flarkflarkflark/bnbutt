@@ -1,4 +1,4 @@
-// aac encoding functions for butt
+// aac encoding functions for bnbutt
 //
 // Copyright 2007-20016 by Daniel Noethen.
 //

@@ -1,4 +1,4 @@
-// icecast functions for butt
+// icecast functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //

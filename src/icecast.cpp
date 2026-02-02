@@ -1,4 +1,4 @@
-// icecast functions for butt
+// icecast functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -32,7 +32,7 @@
 
 #include "config.h"
 #include "cfg.h"
-#include "butt.h"
+#include "bnbutt.h"
 #include "util.h"
 #include "timer.h"
 #include "icecast.h"
@@ -126,7 +126,7 @@ int ic_connect(void)
         snprintf(send_buf, sizeof(send_buf), "Authorization: Basic %s\r\n", b64_auth);
         sock_send(&stream_socket, send_buf, strlen(send_buf), SEND_TIMEOUT);
 
-        // Make butt compatible to proxies/load balancers. Thanks to boyska
+        // Make bnbutt compatible to proxies/load balancers. Thanks to boyska
         if(cfg.srv[cfg.selected_srv]->port == 80)
             snprintf(send_buf, sizeof(send_buf), "Host: %s\r\n", cfg.srv[cfg.selected_srv]->addr);
         else

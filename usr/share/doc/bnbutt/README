@@ -2,10 +2,10 @@
 execute as "asciidoc manual.txt"
 ////
 
-butt (0.1.15) Manual 
+bnbutt (0.1.16) Manual
 ====================
 :author: Daniel Nöthen
-:doctype: book 
+:doctype: book
 :toc2:
 :numbered:
 :lang: en
@@ -14,43 +14,43 @@ butt (0.1.15) Manual
 
 About
 -----
-butt (broadcast using this tool) is an easy to use, multi OS streaming tool. +
+bnbutt (Beats 'n Breaks Use This Tool) is an easy to use, multi OS streaming tool. +
 It supports ShoutCast and IceCast and runs on Linux, MacOS and Windows. +
-The main purpose of butt is to stream live audio data from your computers Mic or Line input +
+The main purpose of bnbutt is to stream live audio data from your computers Mic or Line input +
 to an Shoutcast or Icecast server. Recording is also possible. +
 It is NOT intended to be a server by itself or automatically stream a set of audio files. +
 
 
 Install
 -------
-.OS X: 
-Mount the *butt-<version>.dmg* by double clicking and  +
-drop the butt file to the Applications folder. +
+.OS X:
+Mount the *bnbutt-<version>.dmg* by double clicking and  +
+drop the bnbutt file to the Applications folder. +
 
-.Windows: 
-Just run the *butt-<version>-setup.exe* as usual and go through the +
+.Windows:
+Just run the *bnbutt-<version>-setup.exe* as usual and go through the +
 installer pages. +
 The default installation path might be unusual, but this way it is possible to install +
-butt without administration rights. +
+bnbutt without administration rights. +
 
 .Ubuntu:
-Butt depends on the following packages and their dependencies: +
+bnbutt depends on the following packages and their dependencies: +
 'portaudio19-dev', 'libvorbis-dev', 'libfltk1.3-dev', 'libmp3lame-dev' +
 'libflac-dev', 'libsamplerate-dev', 'libopus-dev' +
 
 Install the .deb package with +
-+dpkg --install butt_<version>-0ubuntu1_amd64.deb+ +
++dpkg --install bnbutt_<version>-0ubuntu1_amd64.deb+ +
 
 .Linux/MinGW:
 First of all you need to have the following libraries installed on your system  +
 'fltk-1.3', 'portaudio', 'libmp3lame', 'libvorbis', 'libogg', 'libFLAC', 'libopus', 'libsamplerate', 'libfdk-aac' +
 They are quite common and should be included in every linux distribution +
 
-After installing the above libraries you can install butt from source as usual:
+After installing the above libraries you can install bnbutt from source as usual:
 
-- +tar -xzf butt-<version>.tar.gz+
+- +tar -xzf bnbutt-<version>.tar.gz+
 
-- +cd butt-<version>+
+- +cd bnbutt-<version>+
 
 - +./configure+
 
@@ -61,9 +61,9 @@ After installing the above libraries you can install butt from source as usual:
 
 Quick start
 -----------
-When you start butt the first time, it will create a default configuration +
-file in in your home directory ('~/.buttrc') on Linux and OS X or at +
-'C:\Users\<username>\AppData\Roaming\buttrc' on Windows. +
+When you start bnbutt the first time, it will create a default configuration +
+file in in your home directory ('~/.bnbuttrc') on Linux and OS X or at +
+'C:\Users\<username>\AppData\Roaming\bnbuttrc' on Windows. +
 
 In order to connect to a server, you need to add a new server in the config window.  +
 Just open the settings window and click on [ADD]. +
@@ -76,27 +76,27 @@ Configuration
 -------------
 The command line option +-c <path_to_file>+ allows you to define a new standard configuration path.  +
 This makes it possible to have multiple instances with different configurations +
-running. In case the file does not exists, butt will create a default file. +
+running. In case the file does not exists, bnbutt will create a default file. +
 
 [Save]: Saves your current settings to the standard configuration +
 file or to the file that was passed to the -c option +
 [Export]: Saves your current settings to the given file +
 [Import]: Loads the selected file and applies the settings +
 
-CAUTION: If you use the -c command line option and import another configuration file by using the + 
+CAUTION: If you use the -c command line option and import another configuration file by using the +
 import function, pressing [Save] will overwrite the file that was passed to the -c option.
 
 
 Main Window
 -----------
-The dot matrix display shows you the current state of the butt software. +
+The dot matrix display shows you the current state of the bnbutt software. +
 The states are: idle, streaming, recording. +
 When in streaming and/or recording state you can cycle through the information by clicking on the display. +
 You can choose between online duration, data sent, recording duration and data recorded +
 
-The [>] symbol shines yellow if butt is connected to a server. +
+The [>] symbol shines yellow if bnbutt is connected to a server. +
 The [O] symbol shines orange if the +[start rec. when connected]+ checkbox is activated. +
-The [O] symbol shines red if butt is currently recording. +
+The [O] symbol shines red if bnbutt is currently recording. +
 
 The coloured LED lights (vu-meter) indicate the current input volume.  For best listening experience  +
 for you listeners I suggest to have the input volume below or within the orange LEDs.  +
@@ -114,12 +114,12 @@ by the given factor. Thus adding to much gain will also add lots of noise. +
 Streaming
 ---------
 To start streaming just klick the play symbol. +
-butt will try to connect to the server until you press the stop symbol. +
+bnbutt will try to connect to the server until you press the stop symbol. +
 
-You can stream with 3 different codecs: mp3, ogg/vorbis and ogg/opus. + 
+You can stream with 3 different codecs: mp3, ogg/vorbis and ogg/opus. +
 In case opus is selected the samplerate is always upsampled to 48kHz. +
 Upsampling needs lot of CPU power. You can change the upsampling +
-algorithm in the +[Advanced]+ settings on the +[Audio]+ tab. Upsampling + 
+algorithm in the +[Advanced]+ settings on the +[Audio]+ tab. Upsampling +
 is deactivated if you select 48kHz as sample rate.
 
 
@@ -128,17 +128,17 @@ You need to reconnect for updating the Stream Infos. +
 
 However, at least you can update the current song on the fly. +
 You only need to type the song into the +Song Name+ input field at the +
-+[Stream]+ tab and hit Enter or click +[OK]+. 
++[Stream]+ tab and hit Enter or click +[OK]+.
 
-butt can also update the song automatically from a text file. +
+bnbutt can also update the song automatically from a text file. +
 The first line of the text file must be the name of the song. +
-As soon as butt detects that the file has been changed it updates the +
+As soon as bnbutt detects that the file has been changed it updates the +
 name of the song on the server. +
 A plugin for the amarok audio player can be found in the 'player_plugins/' +
 directory. +
 Don't hesitate to write a plugin for other audio players. +
-Just mail them to me and I'll add them to the butt package. +
- 
+Just mail them to me and I'll add them to the bnbutt package. +
+
 .Stream infos:
 In the +[main]+ settings window you can add stream infos. +
 This allows you to deliver more details of your stream station. +
@@ -147,9 +147,9 @@ For example the genre of your music, description of your station, web address et
 
 Recording
 ---------
-butt is able to record and stream simultaneously in different bit rates. +
+bnbutt is able to record and stream simultaneously in different bit rates. +
 For example you can stream with 96kbit and record with 192kbit. +
-Recording is possible in mp3, ogg/vorbis, ogg/opus, FLAC or wav. 
+Recording is possible in mp3, ogg/vorbis, ogg/opus, FLAC or wav.
 
 In case 'opus' is selected the samplerate is always upsampled to +48kHz+. +
 Upsampling needs lots of CPU power. You can change the upsampling +
@@ -160,22 +160,22 @@ samplerate of 48kHz, though. +
 
 To record you first need to select the destination folder and specify a file name  +
 in the +[Rec]+ tab.  +
-butt will replace the variables +%d+, +%m+ and +%y+ with the current day, month and year. +
+bnbutt will replace the variables +%d+, +%m+ and +%y+ with the current day, month and year. +
 e.g. +rec_(%m_%d_%y).mp3+ -> +rec_(03_28_2008).mp3+. +
 Other possible time variables are +%H+ (hours) +%M+ (minutes) +%S+ (seconds).
 
- 
+
 With the +%i+ variable you can add an index number to your file name. +
-This means with +rec_%i.mp3+ butt first tries to open +rec_0.mp3+. If that +
-file already exists, butt tries +rec_1.mp3+ and so on... +
- 
-If the 'start recording when connected' checkbox is activated butt starts the +
+This means with +rec_%i.mp3+ bnbutt first tries to open +rec_0.mp3+. If that +
+file already exists, bnbutt tries +rec_1.mp3+ and so on... +
+
+If the 'start recording when connected' checkbox is activated bnbutt starts the +
 recording immediately after being connected to a server. +
- 
+
 To manually start the recording press the record symbol. +
 To stop recording simply click on the record symbol again. +
- 
-You can also tell butt to split your recording into
+
+You can also tell bnbutt to split your recording into
 separat files every *n* minutes. Just enter a number higher than 0 +
 into the 'Split file every [..] minutes' field. +
 Let's assume your file name is +rec_(%m_%d_%y)\_%i.mp3+ Then the first file is +
@@ -189,20 +189,20 @@ at '9:15'.
 
 Uninstall
 ---------
-.OS X: 
-Delete the *butt.app* from your 'Application' folder and +
-remove the configuration file from '/Users/<username>/.buttrc' +
+.OS X:
+Delete the *bnbutt.app* from your 'Application' folder and +
+remove the configuration file from '/Users/<username>/.bnbuttrc' +
 
-.Windows: 
-Run the Uninstaller from the butt folder in your windows start menu. +
+.Windows:
+Run the Uninstaller from the bnbutt folder in your windows start menu. +
 
 .Ubuntu:
-Run +sudo apt-get uninstall butt+ and +
-remove the configuration file from '/home/<username>/.buttrc' +
+Run +sudo apt-get uninstall bnbutt+ and +
+remove the configuration file from '/home/<username>/.bnbuttrc' +
 
-.Linux/MinGW: 
+.Linux/MinGW:
 Run +sudo make uninstall+ from the source tree. and +
-remove the configuration file from '/home/<username>/.buttrc' +
+remove the configuration file from '/home/<username>/.bnbuttrc' +
 
 
 Contact

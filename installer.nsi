@@ -6,7 +6,7 @@
 ; ---------------------------------------------------------------------------
 ;  Build-time defines (passed via makensis -D)
 ;    VERSION   – e.g. "0.1.14"
-;    PKG_DIR   – directory containing butt.exe + DLLs
+;    PKG_DIR   – directory containing bnbutt.exe + DLLs
 ; ---------------------------------------------------------------------------
 
 !ifndef VERSION
@@ -26,8 +26,8 @@ RequestExecutionLevel admin
 ; ---------------------------------------------------------------------------
 ;  UI settings
 ; ---------------------------------------------------------------------------
-!define MUI_ICON "icons\butt.ico"
-!define MUI_UNICON "icons\butt.ico"
+!define MUI_ICON "icons\bnbutt.ico"
+!define MUI_UNICON "icons\bnbutt.ico"
 !define MUI_ABORTWARNING
 
 ; ---------------------------------------------------------------------------
@@ -57,11 +57,11 @@ Section "Install"
 
   ; Registry keys for Add/Remove Programs
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bnbutt" \
-    "DisplayName" "bnbutt - broadcast using this tool"
+    "DisplayName" "bnbutt - Beats 'n Breaks Use This Tool"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bnbutt" \
     "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bnbutt" \
-    "DisplayIcon" '"$INSTDIR\butt.exe"'
+    "DisplayIcon" '"$INSTDIR\bnbutt.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bnbutt" \
     "DisplayVersion" "${VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\bnbutt" \
@@ -75,7 +75,7 @@ Section "Install"
 
   ; Start menu shortcut
   CreateDirectory "$SMPROGRAMS\bnbutt"
-  CreateShortCut "$SMPROGRAMS\bnbutt\bnbutt.lnk" "$INSTDIR\butt.exe"
+  CreateShortCut "$SMPROGRAMS\bnbutt\bnbutt.lnk" "$INSTDIR\bnbutt.exe"
   CreateShortCut "$SMPROGRAMS\bnbutt\Uninstall.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
 

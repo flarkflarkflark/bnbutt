@@ -1,4 +1,4 @@
-// FLTK callback functions for butt
+// FLTK callback functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -35,7 +35,7 @@
 
 #include "FL/Fl_My_Native_File_Chooser.H"
 #include "cfg.h"
-#include "butt.h"
+#include "bnbutt.h"
 #include "port_audio.h"
 #include "timer.h"
 #include "shoutcast.h"

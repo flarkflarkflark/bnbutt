@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=bnbutt
+Comment=Beats 'n Breaks Use This Tool
+GenericName=Streaming Tool
+Keywords=Stream,Audio,Shoutcast,Icecast,Record
+Exec=bnbutt %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=bnbutt
+Categories=AudioVideo;Audio;AudioVideoEditing;
+StartupNotify=true
+

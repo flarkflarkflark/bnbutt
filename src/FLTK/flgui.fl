@@ -204,7 +204,7 @@ class flgui {open
       }
     }
     Fl_Window window_cfg {
-      label {butt settings}
+      label {bnbutt settings}
       callback {window_cfg->hide();
 button_cfg->label("Settings@>");} open
       xywh {1106 123 324 511} type Double
@@ -716,9 +716,9 @@ if (!show_advanced) {
             }
           }
           Fl_Check_Button check_gui_attach {
-            label {Attach this window to butt window}
+            label {Attach this window to bnbutt window}
             callback {check_gui_attach_cb();}
-            tooltip {Attach this window to the butt window} xywh {26 163 245 22} down_box DOWN_BOX
+            tooltip {Attach this window to the bnbutt window} xywh {26 163 245 22} down_box DOWN_BOX
           }
           Fl_Check_Button check_gui_ontop {
             label {Stay always on top}

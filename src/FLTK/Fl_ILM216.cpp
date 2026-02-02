@@ -38,7 +38,7 @@
 #include <ctype.h>
 #include <FL/fl_draw.H>
 
-#include "butt.h"
+#include "bnbutt.h"
 #include "flgui.h"
 
 #include "../xpm/rec.xpm" //rec_xpm

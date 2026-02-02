@@ -1,4 +1,4 @@
-// opus encoding functions for butt
+// opus encoding functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //

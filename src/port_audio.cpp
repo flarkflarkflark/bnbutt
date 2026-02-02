@@ -1,4 +1,4 @@
-// portaudio functions for butt
+// portaudio functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -29,7 +29,7 @@
 
 #include "config.h"
 
-#include "butt.h"
+#include "bnbutt.h"
 #include "cfg.h"
 #include "port_audio.h"
 #include "parseconfig.h"

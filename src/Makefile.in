@@ -78,7 +78,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = butt$(EXEEXT)
+bin_PROGRAMS = bnbutt$(EXEEXT)
 @WINDOWS_TRUE@am__append_1 = resource.rc
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -93,7 +93,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__butt_SOURCES_DIST = butt.cpp butt.h cfg.cpp cfg.h icecast.cpp \
+am__bnbnbutt_SOURCES_DIST = bnbutt.cpp bnbutt.h cfg.cpp cfg.h icecast.cpp \
 	icecast.h lame_encode.cpp lame_encode.h parseconfig.cpp \
 	parseconfig.h port_audio.cpp port_audio.h ringbuffer.cpp \
 	ringbuffer.h shoutcast.cpp shoutcast.h sockfuncs.cpp \
@@ -109,7 +109,7 @@ am__butt_SOURCES_DIST = butt.cpp butt.h cfg.cpp cfg.h icecast.cpp \
 	FLTK/fl_timer_funcs.h aac_encode.cpp aac_encode.h resource.rc
 am__dirstamp = $(am__leading_dot)dirstamp
 @WINDOWS_TRUE@am__objects_1 = resource.$(OBJEXT)
-am_butt_OBJECTS = butt.$(OBJEXT) cfg.$(OBJEXT) icecast.$(OBJEXT) \
+am_bnbnbutt_OBJECTS = bnbutt.$(OBJEXT) cfg.$(OBJEXT) icecast.$(OBJEXT) \
 	lame_encode.$(OBJEXT) parseconfig.$(OBJEXT) \
 	port_audio.$(OBJEXT) ringbuffer.$(OBJEXT) shoutcast.$(OBJEXT) \
 	sockfuncs.$(OBJEXT) strfuncs.$(OBJEXT) timer.$(OBJEXT) \
@@ -120,8 +120,8 @@ am_butt_OBJECTS = butt.$(OBJEXT) cfg.$(OBJEXT) icecast.$(OBJEXT) \
 	FLTK/flgui.$(OBJEXT) FLTK/Fl_My_Native_File_Chooser.$(OBJEXT) \
 	FLTK/fl_timer_funcs.$(OBJEXT) aac_encode.$(OBJEXT) \
 	$(am__objects_1)
-butt_OBJECTS = $(am_butt_OBJECTS)
-butt_LDADD = $(LDADD)
+bnbutt_OBJECTS = $(am_bnbnbutt_OBJECTS)
+bnbutt_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -163,8 +163,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(butt_SOURCES)
-DIST_SOURCES = $(am__butt_SOURCES_DIST)
+SOURCES = $(bnbutt_SOURCES)
+DIST_SOURCES = $(am__bnbnbutt_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -284,7 +284,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -IFLTK
-butt_SOURCES = butt.cpp butt.h cfg.cpp cfg.h icecast.cpp icecast.h \
+bnbutt_SOURCES = bnbutt.cpp bnbutt.h cfg.cpp cfg.h icecast.cpp icecast.h \
 	lame_encode.cpp lame_encode.h parseconfig.cpp parseconfig.h \
 	port_audio.cpp port_audio.h ringbuffer.cpp ringbuffer.h \
 	shoutcast.cpp shoutcast.h sockfuncs.cpp sockfuncs.h \
@@ -394,9 +394,9 @@ FLTK/Fl_My_Native_File_Chooser.$(OBJEXT): FLTK/$(am__dirstamp) \
 FLTK/fl_timer_funcs.$(OBJEXT): FLTK/$(am__dirstamp) \
 	FLTK/$(DEPDIR)/$(am__dirstamp)
 
-butt$(EXEEXT): $(butt_OBJECTS) $(butt_DEPENDENCIES) $(EXTRA_butt_DEPENDENCIES) 
-	@rm -f butt$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(butt_OBJECTS) $(butt_LDADD) $(LIBS)
+bnbutt$(EXEEXT): $(bnbutt_OBJECTS) $(butt_DEPENDENCIES) $(EXTRA_bnbutt_DEPENDENCIES) 
+	@rm -f bnbutt$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(bnbutt_OBJECTS) $(bnbutt_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -406,7 +406,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aac_encode.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/butt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bnbutt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cfg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/flac_encode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icecast.Po@am__quote@

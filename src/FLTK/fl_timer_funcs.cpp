@@ -28,7 +28,7 @@
 #include "config.h"
 
 #include "cfg.h"
-#include "butt.h"
+#include "bnbutt.h"
 #include "util.h"
 #include "port_audio.h"
 #include "timer.h"

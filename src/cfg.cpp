@@ -1,4 +1,4 @@
-// config functions for butt
+// config functions for bnbutt
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -20,15 +20,15 @@
 #include "config.h"
 
 #include "cfg.h"
-#include "butt.h"
+#include "bnbutt.h"
 #include "flgui.h"
 #include "util.h"
 #include "fl_funcs.h"
 
 #ifdef _WIN32
- const char CONFIG_FILE[] = "buttrc";
+ const char CONFIG_FILE[] = "bnbuttrc";
 #else
- const char CONFIG_FILE[] = ".buttrc";
+ const char CONFIG_FILE[] = ".bnbuttrc";
 #endif
 
 config_t cfg;
@@ -52,7 +52,7 @@ int cfg_write_file(char *path)
         return 1;
     }
 
-    fprintf(cfg_fd, "#This is a configuration file for butt (broadcast using this tool)\n\n");
+    fprintf(cfg_fd, "#This is a configuration file for bnbutt (Beats 'n Breaks Use This Tool)\n\n");
     fprintf(cfg_fd, "[main]\n");
 
     fprintf(cfg_fd, "bg_color = %d\n", cfg.main.bg_color);
@@ -357,7 +357,7 @@ int cfg_set_values(char *path)
     cfg.main.num_of_srv = cfg_get_int("main", "num_of_srv");
     if(cfg.main.num_of_srv == -1)
     {
-        fl_alert("error while parsing config. Illegal value (-1) for num_of_srv.\nbutt is going to close now");
+        fl_alert("error while parsing config. Illegal value (-1) for num_of_srv.\nbnbutt is going to close now");
         exit(1);
     }
     if(cfg.main.num_of_srv > 0)
@@ -365,14 +365,14 @@ int cfg_set_values(char *path)
         cfg.main.srv     = cfg_get_str("main", "server");
         if(cfg.main.srv == NULL)
         {
-            fl_alert("error while parsing config. Missing main/server entry.\nbutt is going to close now");
+            fl_alert("error while parsing config. Missing main/server entry.\nbnbutt is going to close now");
             exit(1);
         }
 
         cfg.main.srv_ent = cfg_get_str("main", "srv_ent");
         if(cfg.main.srv_ent == NULL)
         {
-            fl_alert("error while parsing config. Missing main/srv_ent entry.\nbutt is going to close now");
+            fl_alert("error while parsing config. Missing main/srv_ent entry.\nbnbutt is going to close now");
             exit(1);
         }
 
@@ -393,7 +393,7 @@ int cfg_set_values(char *path)
             if(cfg.srv[i]->addr == NULL)
             {
                 fl_alert("error while parsing config. Missing address entry for server \"%s\"."
-                        "\nbutt is going to close now", srv_ent);
+                        "\nbnbutt is going to close now", srv_ent);
                 exit(1);
             }
 
@@ -401,7 +401,7 @@ int cfg_set_values(char *path)
             if(cfg.srv[i]->port == -1)
             {
                 fl_alert("error while parsing config. Missing port entry for server \"%s\"."
-                        "\nbutt is going to close now", srv_ent);
+                        "\nbnbutt is going to close now", srv_ent);
                 exit(1);
             }
 
@@ -409,7 +409,7 @@ int cfg_set_values(char *path)
             if(cfg.srv[i]->pwd == NULL)
             {
                 fl_alert("error while parsing config. Missing password entry for server \"%s\"."
-                        "\nbutt is going to close now", srv_ent);
+                        "\nbnbutt is going to close now", srv_ent);
                 exit(1);
             }
 
@@ -417,7 +417,7 @@ int cfg_set_values(char *path)
             if(cfg.srv[i]->type == -1)
             {
                 fl_alert("error while parsing config. Missing type entry for server \"%s\"."
-                        "\nbutt is going to close now", srv_ent);
+                        "\nbnbutt is going to close now", srv_ent);
                 exit(1);
             }
 
@@ -425,7 +425,7 @@ int cfg_set_values(char *path)
             if((cfg.srv[i]->mount == NULL) &&  (cfg.srv[i]->type == ICECAST))
             {
                 fl_alert("error while parsing config. Missing mount entry for server \"%s\"."
-                        "\nbutt is going to close now", srv_ent);
+                        "\nbnbutt is going to close now", srv_ent);
                 exit(1);
             }
 
@@ -446,7 +446,7 @@ int cfg_set_values(char *path)
     cfg.main.num_of_icy = cfg_get_int("main", "num_of_icy");
     if(cfg.main.num_of_icy == -1)
     {
-        fl_alert("error while parsing config. Illegal value (-1) for num_of_icy.\nbutt is going to close now");
+        fl_alert("error while parsing config. Illegal value (-1) for num_of_icy.\nbnbutt is going to close now");
         exit(1);
     }
     
@@ -457,13 +457,13 @@ int cfg_set_values(char *path)
         cfg.main.icy     = cfg_get_str("main", "icy");
         if(cfg.main.icy == NULL)
         {
-            fl_alert("error while parsing config. Missing main/icy entry.\nbutt is going to close now");
+            fl_alert("error while parsing config. Missing main/icy entry.\nbnbutt is going to close now");
             exit(1);
         }
         cfg.main.icy_ent = cfg_get_str("main", "icy_ent");          //icy entries
         if(cfg.main.icy_ent == NULL)
         {
-            fl_alert("error while parsing config. Missing main/icy_ent entry.\nbutt is going to close now");
+            fl_alert("error while parsing config. Missing main/icy_ent entry.\nbnbutt is going to close now");
             exit(1);
         }
 
@@ -490,7 +490,7 @@ int cfg_set_values(char *path)
             if(cfg.icy[i]->pub == NULL)
             {
                 fl_alert("error while parsing config. Missing pub entry for icy \"%s\"."
-                        "\nbutt is going to close now", icy_ent);
+                        "\nbnbutt is going to close now", icy_ent);
                 exit(1);
             }
 
@@ -581,7 +581,7 @@ int cfg_create_default(void)
 #endif
 
 
-    fprintf(cfg_fd, "#This is a configuration file for butt (broadcast using this tool)\n\n");
+    fprintf(cfg_fd, "#This is a configuration file for bnbutt (Beats 'n Breaks Use This Tool)\n\n");
     fprintf(cfg_fd, 
             "[main]\n"
             "server =\n"

@@ -7,13 +7,13 @@ Version 0.1.16 (2017-09-17)
   AAC+v1: 48 kBit/s <= bitrate < 96kBit/s	(aac_aot = 5)
   AAC-LC: bitrate >= 96kBit/s				(aac_aot = 2)
 * you can force the AAC codec to a specific profile by setting
-  aac_overwrite_aot = 1 and aac_aot to the appropriate aot value {2,5,29} in buttrc
+  aac_overwrite_aot = 1 and aac_aot to the appropriate aot value {2,5,29} in bnbuttrc
 
 
 Version 0.1.15 (2016-05-28)
 ---------------------------
 * added AAC+ support
-* added a "Split now" button to instantly start a new recording file
+* added a "Split now" bnbutton to instantly start a new recording file
 * improved look&feel on retina displays on OSX
 * improved compatibility with proxies/load balancers (thanks to boyska)
 * fixed handling of newline characters when reading the song name file
@@ -38,13 +38,13 @@ Version 0.1.14 (2014-12-27)
 * connecting to an unreachable server does not freeze the GUI anymore
 * fixed icecast and shoutcast meta data handling
 * made update song from file more robust
-* "update song name manually" reacts on Enter button now
+* "update song name manually" reacts on Enter bnbutton now
 
 Version 0.1.13 (2014-05-02)
 ---------------------------
 * has an icon now! - Thanks to Subrat (ipapuna) Nayak
 * added support for lower bitrates (24k, 16k, 8k)
-* added support for user defined configuration path e.g. "butt -c <path_to_config>"
+* added support for user defined configuration path e.g. "bnbutt -c <path_to_config>"
 * added support for user names in Icecast
 * added gain slider. This slider multiplies the audio input samples with the given factor
 * added .manifest file to disable the VirtualStore on Windows Vista and higher
@@ -65,11 +65,11 @@ Version 0.1.13 (2014-05-02)
 * windows: can be installed as user without admin rights 
 * windows: uninstallation process also removes the configuration file
 * instead of canceling the automatic song update in case the given file is not
-readable, butt now tries to reread the file every 5 seconds
+readable, bnbutt now tries to reread the file every 5 seconds
 
 Version 0.1.12 (2010-04-10)
 ---------------------------
-* butt is now able to connect automatically after startup
+* bnbutt is now able to connect automatically after startup
 * shortened time between connect attempts (fixes Shouted.FM connection problems)
 * improved wrong password detection for shoutcast	
 
@@ -86,7 +86,7 @@ Version 0.1.11 (2008-10-26)
 * fixed unintended disconnects
 * fixed recording problems
 * removed buffer overrun messages
-* recording can be now stopped with the stop-button
+* recording can be now stopped with the stop-bnbutton
 * replaced pcm recording by wav recording
 * recording as ogg is now possible 
 * added "stay on top" checkbox
@@ -104,18 +104,18 @@ Version 0.1.10 (2008-05-25)
 * fixed samplerate selection problems
 * fixed crash when connecting to icecast server on MacOS 10.4
 * fixed crash when changing the server type from shoutcast to icecast
-* some cosmetic changes (buttons, LEDs)
+* some cosmetic changes (bnbuttons, LEDs)
 
 Version 0.1.9 (2008-04-10)
 ---------------------------
 * minor GUI makeup
-* made butt more verbose
+* made bnbutt more verbose
 * fixed possible segfault when trying to EDIT stream info
 * fixed automatic reconnection
 * filenames can be indexed with the %i variable now
 * renamed "rec not until connected" checkbox to "start rec. when connected"
 * added orange record icon for "armed" state ("start rec. when connected" = 1)
-* butt starts recording as soon as connected, when in "armed" state
+* bnbutt starts recording as soon as connected, when in "armed" state
 
 Version 0.1.8 (2008-03-30)
 ---------------------------
@@ -132,7 +132,7 @@ Version 0.1.8 (2008-03-30)
 
 Version 0.1.7rc1 (2008-01-04)
 ---------------------------
-* butt runs on MacOS 10.4 and 10.5 now!
+* bnbutt runs on MacOS 10.4 and 10.5 now!
 * added recording time to the display info
 * fixed bug with '&' in the song string
 * changing the display mode works only when connected now
@@ -146,7 +146,7 @@ Version 0.1.6 (2007-12-08)
 ---------------------------
 * added status symbols to the display
 * recording runs with a seperate thread now!
-* added a button for showing/hiding the server password
+* added a bnbutton for showing/hiding the server password
 
 Version 0.1.5 (2007-11-22)
 ---------------------------
@@ -160,8 +160,8 @@ Version 0.1.5 (2007-11-22)
 Version 0.1.5rc1 (2007-11-16)
 ---------------------------
 * replaced ALSA by PortAudio -> OSS is supported now
-* ported butt to Microsoft Windows (tested with win2k and win xp)
-* butt reminds the user about unsaved changes when closing now
+* ported bnbutt to Microsoft Windows (tested with win2k and win xp)
+* bnbutt reminds the user about unsaved changes when closing now
 * starting the recording is possible at any time now
 * added mono encoding for OGG
 * improved some GUI stuff
@@ -169,21 +169,21 @@ Version 0.1.5rc1 (2007-11-16)
 
 Version 0.1.4rc2 (2007-11-03)
 ---------------------------
-* butt should compile on more machines now
+* bnbutt should compile on more machines now
 
 Version 0.1.4rc1 (2007-11-01)
 ---------------------------
 * added IceCast support (ogg and mp3)
 * added ./configure script
-* butt is now able to send the "Current Song" value to the ShoutCast/IceCast server
+* bnbutt is now able to send the "Current Song" value to the ShoutCast/IceCast server
 * Changed stereo mode from joint-stereo to real-stereo
 * code cleanup
 
 Version 0.1.3 (2007-10-08)
 ---------------------------
-* bugfix: butt crashed if you press "apply" in the server/icy tab without
+* bugfix: bnbutt crashed if you press "apply" in the server/icy tab without
 having an server/ICY-entry
-* bugfix: butt crashed if you change the bitrate without having an ICY-entry
+* bugfix: bnbutt crashed if you change the bitrate without having an ICY-entry
 * bugfix: there was some uncommented code in the [DEL]-server callback-routine
 which shouldn't be uncommented 
 * facelift: if you delete all server/ICY-entries, the input fields in the server/ICY
@@ -191,13 +191,13 @@ still showed the values of the last server/ICY-entry
 
 Version 0.1.2 (2007-10-07)
 ---------------------------
-* added a GUI for configuring butt
+* added a GUI for configuring bnbutt
 * comments behind config entries are not allowed anymore.
 * removed the network init part. It was nonsense
 * fixed mono playblack
 * fixed recording problems
-* ICY entries can now be empty without causing butt to crash
-* butt shows the real port in its "connecting to..."-info line now and the "pseudeo" port in parenthesis
+* ICY entries can now be empty without causing bnbutt to crash
+* bnbutt shows the real port in its "connecting to..."-info line now and the "pseudeo" port in parenthesis
 * fixed a bug which causes pcm data loss in some cases
 
 Version 0.1.1 (2007-09-16)

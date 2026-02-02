@@ -5,17 +5,17 @@ AM_CPPFLAGS = -IFLTK
 if DARWIN
 # FLTK's Cocoa backend pulls in Objective-C headers; compile as Objective-C++ on macOS.
 # Per-target CXXFLAGS keeps -x objective-c++ out of AM_CXXFLAGS, but automake still
-# puts butt_CXXFLAGS into the generated butt_LINK rule.  Add -x none via LDFLAGS so the
+# puts bnbutt_CXXFLAGS into the generated bnbutt_LINK rule.  Add -x none via LDFLAGS so the
 # linker sees it *after* -x objective-c++ and stops treating .o files as source.
-butt_CXXFLAGS = -x objective-c++
-butt_LDFLAGS = -x none
+bnbutt_CXXFLAGS = -x objective-c++
+bnbutt_LDFLAGS = -x none
 endif
 
 #
 # # this lists the binaries to produce, the (non-PHONY, binary) targets in
 # # the previous manual Makefile
-bin_PROGRAMS = butt 
-butt_SOURCES = butt.cpp butt.h cfg.cpp cfg.h icecast.cpp icecast.h lame_encode.cpp \
+bin_PROGRAMS = bnbutt
+bnbutt_SOURCES = bnbutt.cpp bnbutt.h cfg.cpp cfg.h icecast.cpp icecast.h lame_encode.cpp \
 			   lame_encode.h parseconfig.cpp parseconfig.h port_audio.cpp \
 			   port_audio.h ringbuffer.cpp ringbuffer.h shoutcast.cpp shoutcast.h \
 			   sockfuncs.cpp sockfuncs.h strfuncs.cpp strfuncs.h timer.cpp timer.h \
@@ -26,10 +26,10 @@ butt_SOURCES = butt.cpp butt.h cfg.cpp cfg.h icecast.cpp icecast.h lame_encode.c
 			   FLTK/FL/Fl_My_Double_Window.H FLTK/FL/Fl_My_Value_Slider.H \
 			   FLTK/Fl_My_Native_File_Chooser.cxx FLTK/FL/Fl_My_Native_File_Chooser.H \
 			   FLTK/fl_timer_funcs.cpp FLTK/fl_timer_funcs.h aac_encode.cpp aac_encode.h
-			   
+
 
 if WINDOWS
-butt_SOURCES += resource.rc
+bnbutt_SOURCES += resource.rc
 endif
 
 # used only under MinGW to compile the resource.rc file (manifest and program icon)

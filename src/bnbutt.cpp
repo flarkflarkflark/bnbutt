@@ -1,4 +1,4 @@
-// butt - broadcast using this tool
+// bnbutt - Beats 'n Breaks Use This Tool
 //
 // Copyright 2007-2008 by Daniel Noethen.
 //
@@ -35,7 +35,7 @@
 #include "config.h"
 
 #include "cfg.h"
-#include "butt.h"
+#include "bnbutt.h"
 #include "port_audio.h"
 #include "lame_encode.h"
 #include "opus_encode.h"
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
 
     if(snd_init() != 0)
     {
-        ALERT("PortAudio init failed\nbutt is going to close now");
+        ALERT("PortAudio init failed\nbnbutt is going to close now");
         return 1;
     }
 
@@ -173,10 +173,10 @@ int main(int argc, char *argv[])
 
         if(cfg_create_default())
         {
-            fl_alert("Could not create config %s\nbutt is going to close now", cfg_path);
+            fl_alert("Could not create config %s\nbnbutt is going to close now", cfg_path);
             return 1;
         }
-        sprintf(info_buf, "butt created a default config at\n%s\n",
+        sprintf(info_buf, "bnbutt created a default config at\n%s\n",
                 cfg_path );
 
         print_info(info_buf, 0);
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 		button_connect_cb();
 
     snprintf(info_buf, sizeof(info_buf),
-            "butt %s started successfully", VERSION);
+            "bnbutt %s started successfully", VERSION);
     print_info(info_buf, 0);
 
     GUI_LOOP();

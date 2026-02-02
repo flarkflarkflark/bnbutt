@@ -1,14 +1,14 @@
 [Desktop Entry]
 Version=1.0
-Name=butt
-Comment=broadcast using this tool
-GenericName=Streaming Tool
+Name=bnbutt
+Comment=Beats 'n Breaks Use This Tool
+GenericName=bnbutt
 Keywords=Stream,Audio,Shoutcast,Icecast,Record
-Exec=butt %u
+Icon=bnbutt
+Exec=bnbutt
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Icon=butt
-Categories=AudioVideo;Audio;AudioVideoEditing;
+Categories=AudioVideo;Audio;
 StartupNotify=true
 
