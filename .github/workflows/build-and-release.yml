@@ -29,6 +29,7 @@ jobs:
             libogg-dev libvorbis-dev libvorbisenc2 libvorbisenc2 \
             libopus-dev libmp3lame-dev libflac-dev portaudio19-dev libsamplerate0-dev libfdk-aac-dev \
             libportmidi-dev libcurl4-openssl-dev libssl-dev \
+            libdbus-1-dev \
             libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev \
             libfltk1.3-dev
 
