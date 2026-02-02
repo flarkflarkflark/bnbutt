@@ -44,6 +44,9 @@ AC_ARG_WITH([butt],
 AC_ARG_ENABLE([aac],
     AS_HELP_STRING([--disable-aac], [Disable aac support]))
 
+AC_ARG_ENABLE([webrtc],
+    AS_HELP_STRING([--enable-webrtc], [Enable WebRTC support]))
+
 
 AS_IF([test "x$with_radioco" = "xyes"], 
       [
@@ -140,15 +143,11 @@ case "${host_os}" in
 			    [AC_MSG_ERROR([**** Could not find libfdk-aac - run ./configure --disable-aac to build without aac support ****])]
             )
 	    ])
-        AC_ARG_ENABLE([webrtc],
-        AS_HELP_STRING([--enable-webrtc], [Enable WebRTC support]), 
-        [
-            AS_IF([test "x$client_only" != "xyes"], 
+        AS_IF([test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"],
             [
                 AC_CHECK_LIB([datachannel], [rtcCreatePeerConnection], [],
 	            [AC_MSG_ERROR([**** Could not find datachannel      ****])])
             ])
-        ])
     ;;
     cygwin*|mingw*|windows)
         build_windows=yes
@@ -158,7 +157,7 @@ case "${host_os}" in
         # Instead define HAVE_LIBFDK_AAC manually, so butt runs with and without the dll
         CPPFLAGS="$CPPFLAGS -DHAVE_LIBFDK_AAC"
 
-        AS_IF([test "x$client_only" != "xyes"], 
+        AS_IF([test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"],
         [
             AC_CHECK_LIB([datachannel], [rtcCreatePeerConnection], [],
 	        [AC_MSG_ERROR([**** Could not find datachannel      ****])])
@@ -171,7 +170,7 @@ case "${host_os}" in
         LIBS="$LIBS -framework AVFoundation -lintl -framework ScriptingBridge"
         LDFLAGS="$LDFLAGS -rpath /usr/local/lib"
         
-        AS_IF([test "x$client_only" != "xyes"], 
+        AS_IF([test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"],
         [
             AC_CHECK_LIB([datachannel], [rtcCreatePeerConnection], [],
 	        [AC_MSG_ERROR([**** Could not find datachannel      ****])])
@@ -190,14 +189,10 @@ case "${host_os}" in
 			)
         ])
         
-        AC_ARG_ENABLE([webrtc],
-        AS_HELP_STRING([--enable-webrtc], [Enable WebRTC support]), 
+        AS_IF([test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"],
         [
-            AS_IF([test "x$client_only" != "xyes"], 
-            [
-                AC_CHECK_LIB([datachannel], [rtcCreatePeerConnection], [],
-	            [AC_MSG_ERROR([**** Could not find datachannel      ****])])
-            ])
+            AC_CHECK_LIB([datachannel], [rtcCreatePeerConnection], [],
+	        [AC_MSG_ERROR([**** Could not find datachannel      ****])])
         ])
         ;;
     *)

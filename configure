@@ -9077,11 +9077,7 @@ fi
 
 
 fi
-        # Check whether --enable-webrtc was given.
-if test ${enable_webrtc+y}
-then :
-  enableval=$enable_webrtc;
-            if test "x$client_only" != "xyes"
+        if test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"
 then :
 
                 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for rtcCreatePeerConnection in -ldatachannel" >&5
@@ -9128,8 +9124,6 @@ then :
 else $as_nop
   as_fn_error $? "**** Could not find datachannel      ****" "$LINENO" 5
 fi
-
-
 fi
 
 fi
@@ -9144,7 +9138,7 @@ printf "%s\n" "$as_me: Windows detected" >&6;}
         # Instead define HAVE_LIBFDK_AAC manually, so butt runs with and without the dll
         CPPFLAGS="$CPPFLAGS -DHAVE_LIBFDK_AAC"
 
-        if test "x$client_only" != "xyes"
+        if test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"
 then :
 
             { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for rtcCreatePeerConnection in -ldatachannel" >&5
@@ -9203,7 +9197,7 @@ printf "%s\n" "$as_me: MacOS detected" >&6;}
         LIBS="$LIBS -framework AVFoundation -lintl -framework ScriptingBridge"
         LDFLAGS="$LDFLAGS -rpath /usr/local/lib"
 
-        if test "x$client_only" != "xyes"
+        if test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"
 then :
 
             { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for rtcCreatePeerConnection in -ldatachannel" >&5
@@ -9310,11 +9304,7 @@ fi
 
 fi
 
-        # Check whether --enable-webrtc was given.
-if test ${enable_webrtc+y}
-then :
-  enableval=$enable_webrtc;
-            if test "x$client_only" != "xyes"
+        if test "x$enable_webrtc" = "xyes" -a "x$client_only" != "xyes"
 then :
 
                 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for rtcCreatePeerConnection in -ldatachannel" >&5
@@ -9361,8 +9351,6 @@ then :
 else $as_nop
   as_fn_error $? "**** Could not find datachannel      ****" "$LINENO" 5
 fi
-
-
 fi
 
 fi
