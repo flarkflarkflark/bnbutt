@@ -9126,8 +9126,6 @@ else $as_nop
 fi
 fi
 
-fi
-
     ;;
     cygwin*|mingw*|windows)
         build_windows=yes
