@@ -70,8 +70,6 @@ jobs:
       - name: Build (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          autoreconf -fi
-
           if [ "${{ runner.os }}" = "macOS" ]; then
             BREW_PREFIX="$(brew --prefix)"
             export CPPFLAGS="-I${BREW_PREFIX}/include"
@@ -85,7 +83,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: msys2 {0}
         run: |
-          autoreconf -fi
           ./configure
           make -j"$(nproc)"
 
