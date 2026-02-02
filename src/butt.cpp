@@ -388,7 +388,7 @@ int get_threshold_from_args(char opt, char *optarg, command_t *command)
 
 int main(int argc, char *argv[])
 {
-    DEBUG_LOG("Starting BUTT");
+    DEBUG_LOG("Starting BNBUTT");
     char lcd_buf[33];
     char info_buf[256];
     int opt;
@@ -791,11 +791,7 @@ int main(int argc, char *argv[])
     aac_rec.handle = NULL;
 #endif
 
-    snprintf(info_buf, sizeof(info_buf),
-             _("Starting %s\nWritten by Daniel Nöthen\n"
-               "iPhone/iPad client: https://izicast.de\n"
-               "Donate: https://buttm.app\n"),
-             PACKAGE_STRING);
+    snprintf(info_buf, sizeof(info_buf), _("Starting %s\n"), PACKAGE_STRING);
     print_info(info_buf, 0);
 
     DEBUG_LOG("Init GUI and audio");

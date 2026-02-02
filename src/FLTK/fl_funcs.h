@@ -51,6 +51,7 @@ void update_rec_bitrate_list(int codec);
 int get_bitrate_index(int codec, int bitrate);
 int get_codec_index(char *codec);
 int get_midi_ctrl_type(int midi_command);
+void resize_main_window_layout(int w, int h);
 
 typedef const char *(*currentTrackFunction)(int);
 extern currentTrackFunction getCurrentTrackFunctionFromId(int i);

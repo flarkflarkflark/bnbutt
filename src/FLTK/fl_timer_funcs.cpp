@@ -363,32 +363,15 @@ void display_info_timer(void *reset)
 
 void rotate_sponsor_logo_timer(void *)
 {
-    static int current_logo = rand() % 2;
-    static Fl_Image *sponsor_logo = NULL;
+    static Fl_Image *logo = NULL;
 
-    if (sponsor_logo != NULL) {
-        delete sponsor_logo;
+    if (logo == NULL) {
+        logo = new Fl_RGB_Image(bnbutt_logo, 124, 61, 4, 0);
+        fl_g->sponsor_logo->image(logo);
+        fl_g->sponsor_logo->deactivate();
     }
 
-    if (current_logo == 0) {
-        sponsor_logo = new Fl_RGB_Image(radio_co_logo, 124, 61, 4, 0);
-        fl_g->sponsor_logo->callback([](Fl_Widget *w, void *u) {
-            fl_open_uri("https://radio.co/?utm_source=butt&utm_medium=app");
-        });
-        current_logo = 1;
-    }
-    else if (current_logo == 1) {
-        sponsor_logo = new Fl_RGB_Image(live365_logo, 124, 61, 4, 0);
-        fl_g->sponsor_logo->callback([](Fl_Widget *w, void *u) {
-            fl_open_uri("https://live365.com/broadcaster/radio-broadcasting?utm_source=butt&utm_medium=click&utm_campaign=onestopshop");
-        });
-        current_logo = 0;
-    }
-
-    fl_g->sponsor_logo->image(sponsor_logo);
     fl_g->sponsor_logo->redraw();
-
-    Fl::repeat_timeout(10, &rotate_sponsor_logo_timer);
 }
 
 void display_rotate_timer(void *)
@@ -641,7 +624,7 @@ void request_listener_count_timer(void *reset)
 
     if (atom_get_int(&request_listener_count_thread_running) == 0) {
         if (pthread_create(&request_listener_count_thread_detached, NULL, request_listener_count_thread_func, reset) != 0) {
-            print_info("Fatal error: Could not launch request listeners thread. Please restart BUTT", 1);
+            print_info("Fatal error: Could not launch request listeners thread. Please restart BNBUTT", 1);
             return;
         }
     }
@@ -652,7 +635,7 @@ void request_listener_count_timer(void *reset)
 void split_recording_file_timer(void)
 {
     if (pthread_create(&split_recording_file_thread_detached, NULL, split_recording_file_thread_func, NULL) != 0) {
-        print_info("Fatal error: Could not launch split recording thread. Please restart BUTT", 1);
+        print_info("Fatal error: Could not launch split recording thread. Please restart BNBUTT", 1);
         return;
     }
 }
@@ -1131,7 +1114,7 @@ void song_url_timer(void *user_data)
 {
     if (atom_get_int(&url_song_update_thread_running) == 0) {
         if (pthread_create(&url_song_update_thread_detached, NULL, url_song_update_thread_func, user_data) != 0) {
-            print_info("Fatal error: Could not launch url song update thread. Please restart BUTT", 1);
+            print_info("Fatal error: Could not launch url song update thread. Please restart BNBUTT", 1);
             return;
         }
     }

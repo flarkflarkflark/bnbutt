@@ -176,10 +176,6 @@ private:
   static void cb_check_update_at_startup(Fl_Check_Button*, void*);
   inline void cb_Check_i(Fl_Button*, void*);
   static void cb_Check(Fl_Button*, void*);
-  inline void cb_Manual_i(Fl_Button*, void*);
-  static void cb_Manual(Fl_Button*, void*);
-  inline void cb_YouTube_i(Fl_Button*, void*);
-  static void cb_YouTube(Fl_Button*, void*);
 public:
   Fl_Choice *choice_cfg_channel;
   static unsigned char menu_choice_cfg_channel_i18n_done;
@@ -806,14 +802,6 @@ public:
 private:
   inline void cb_input_gui_window_title_i(Fl_Input*, void*);
   static void cb_input_gui_window_title(Fl_Input*, void*);
-  inline void cb_Donate_i(Fl_Button*, void*);
-  static void cb_Donate(Fl_Button*, void*);
-  inline void cb_Become_i(Fl_Button*, void*);
-  static void cb_Become(Fl_Button*, void*);
-  inline void cb_Apple_i(Fl_Button*, void*);
-  static void cb_Apple(Fl_Button*, void*);
-  inline void cb_Bitcoin_i(Fl_Button*, void*);
-  static void cb_Bitcoin(Fl_Button*, void*);
 public:
   Fl_Double_Window *window_add_srv;
   Fl_Input *input_add_srv_name;
@@ -911,24 +899,6 @@ public:
 private:
   inline void cb_button_add_icy_save_i(Fl_Button*, void*);
   static void cb_button_add_icy_save(Fl_Button*, void*);
-public:
-  Fl_My_Double_Window *window_donate_crypto;
-  Fl_Output *output_bitcoin_addr;
-private:
-  inline void cb_Copy_i(Fl_Button*, void*);
-  static void cb_Copy(Fl_Button*, void*);
-public:
-  Fl_Output *output_litecoin_addr;
-private:
-  inline void cb_Copy1_i(Fl_Button*, void*);
-  static void cb_Copy1(Fl_Button*, void*);
-public:
-  Fl_Output *output_monero_addr;
-private:
-  inline void cb_Copy2_i(Fl_Button*, void*);
-  static void cb_Copy2(Fl_Button*, void*);
-  inline void cb_Close_i(Fl_Button*, void*);
-  static void cb_Close(Fl_Button*, void*);
 public:
   Fl_My_Double_Window *window_stream_codec_settings;
   Fl_Tabs *tabs_stream_codec_settings;

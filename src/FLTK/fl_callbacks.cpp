@@ -240,7 +240,7 @@ void button_connect_cb(void)
 
     try_to_connect = 1;
     if (pthread_create(&pt_connect_detached, NULL, connect_thread, NULL) != 0) {
-        print_info("Fatal error: Could not launch connect thread. Please restart BUTT", 1);
+        print_info("Fatal error: Could not launch connect thread. Please restart BNBUTT", 1);
         try_to_connect = 0;
         goto not_connected;
     }
@@ -1077,7 +1077,7 @@ void button_info_cb()
     if (!fl_g->info_visible) {
         // Show info output...
 
-        fl_g->window_main->size_range(fl_g->window_main->w(), 276, fl_g->window_main->w(), 0);
+        fl_g->window_main->size_range(320, 276, 0, 0);
 
         if (cfg.gui.window_height > fl_g->info_output->y() + 10) {
             fl_g->window_main->resize(fl_g->window_main->x(), fl_g->window_main->y(), fl_g->window_main->w(), cfg.gui.window_height);
@@ -1091,7 +1091,7 @@ void button_info_cb()
     }
     else {
         // Hide info output...
-        fl_g->window_main->size_range(fl_g->window_main->w(), fl_g->info_output->y() - 25, fl_g->window_main->w(), fl_g->info_output->y() - 25);
+        fl_g->window_main->size_range(320, fl_g->info_output->y() - 25, 0, fl_g->info_output->y() - 25);
         fl_g->info_output->hide();
         fl_g->window_main->resize(fl_g->window_main->x(), fl_g->window_main->y(), fl_g->window_main->w(), fl_g->info_output->y() - 25);
         fl_g->button_info->label(_("Show log"));
@@ -1590,8 +1590,8 @@ void radio_add_srv_radioco_cb(void)
 void button_add_srv_get_stations_cb(void)
 {
 #ifdef WITH_RADIOCO
-    if (fl_choice(_("butt will open Radio.co in a new browser window.\n\n"
-                    "Login to Radio.co and allow butt access to your account."),
+    if (fl_choice(_("bnbutt will open Radio.co in a new browser window.\n\n"
+                    "Login to Radio.co and allow bnbutt access to your account."),
                   _("Cancel"), _("OK"), NULL) == 0) { // Cancel
         return;
     }
@@ -2715,7 +2715,7 @@ void choice_cfg_dev_cb(void)
     cfg.audio.dev_num = new_dev_num;
     update_samplerates_list();
     if (snd_reopen_streams() != 0) {
-        fl_alert(_("butt could not open selected audio device.\nPlease try another device.\n"));
+        fl_alert(_("bnbutt could not open selected audio device.\nPlease try another device.\n"));
 
         // Fall back to previous selected primary device
         fl_g->choice_cfg_dev2->value(prev_dev_num);
@@ -2767,7 +2767,7 @@ void choice_cfg_dev2_cb(void)
 
     cfg.audio.dev2_num = new_dev2_num;
     if (snd_reopen_streams() != 0) {
-        fl_alert(_("butt could not open secondary audio device.\nPlease try another device.\n"));
+        fl_alert(_("bnbutt could not open secondary audio device.\nPlease try another device.\n"));
 
         // Fall back to previous selected secondary device
         fl_g->choice_cfg_dev2->value(prev_dev2_num + 1);
@@ -3786,7 +3786,7 @@ void input_gui_vu_high_range_start_cb(void)
 void choice_gui_language_cb(void)
 {
     lang_id_to_str(fl_g->choice_gui_language->value(), &cfg.gui.lang_str, LANG_MAPPING_NEW);
-    fl_alert(_("Please restart butt to apply new language."));
+    fl_alert(_("Please restart bnbutt to apply new language."));
 }
 
 void radio_gui_vu_gradient_cb(void)
@@ -4153,7 +4153,7 @@ void button_cfg_import_cb(void)
     init_main_gui_and_audio();
     fill_cfg_widgets();
     if (snd_reopen_streams() != 0) {
-        fl_alert(_("butt could not open selected audio device.\nPlease try another device.\n"));
+        fl_alert(_("bnbutt could not open selected audio device.\nPlease try another device.\n"));
         return;
     }
     update_channel_lists();
@@ -4182,7 +4182,7 @@ void button_start_agent_cb(void)
         }
     }
     else {
-        fl_alert("butt agent is already running.");
+        fl_alert("bnbutt agent is already running.");
     }
 #endif
 }
@@ -4195,7 +4195,7 @@ void button_stop_agent_cb(void)
         Fl::add_timeout(1, &has_agent_been_stopped_timer);
     }
     else {
-        fl_alert("butt agent is currently not running.");
+        fl_alert("bnbutt agent is currently not running.");
     }
 
 #endif
@@ -4271,14 +4271,14 @@ void window_main_close_cb(bool ask)
         int ret;
         if (connected) {
             fl_message_title("Streaming");
-            ret = fl_choice(_("butt is currently streaming.\n"
-                              "Do you really want to close butt now?"),
+            ret = fl_choice(_("bnbutt is currently streaming.\n"
+                              "Do you really want to close bnbutt now?"),
                             _("no"), _("yes"), NULL);
         }
         else {
             fl_message_title("Recording");
-            ret = fl_choice(_("butt is currently recording.\n"
-                              "Do you really want to close butt now?"),
+            ret = fl_choice(_("bnbutt is currently recording.\n"
+                              "Do you really want to close bnbutt now?"),
                             _("no"), _("yes"), NULL);
         }
 

@@ -18,7 +18,7 @@ void showAlert() {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:@(_("Microphone access"))];
-        [alert setInformativeText:@(_("butt needs access to your microphone.\n\nPlease go to\nSystem Preferences->Privacy & Security->Microphone\nand activate the check mark next to the butt entry."))];
+        [alert setInformativeText:@(_("bnbutt needs access to your microphone.\n\nPlease go to\nSystem Preferences->Privacy & Security->Microphone\nand activate the check mark next to the bnbutt entry."))];
         [alert addButtonWithTitle:@"Ok"];
         [alert runModal];
         [alert release];

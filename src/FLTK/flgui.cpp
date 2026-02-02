@@ -1777,24 +1777,6 @@ void flgui::cb_Check(Fl_Button* o, void* v) {
   ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Check_i(o,v);
 }
 
-void flgui::cb_Manual_i(Fl_Button*, void*) {
-  char uri[128];
-snprintf(uri, sizeof(uri), "https://buttm.app/butt/release/%s/butt-%s_manual.html", VERSION, VERSION);
-fl_open_uri(uri);
-}
-void flgui::cb_Manual(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Manual_i(o,v);
-}
-
-void flgui::cb_YouTube_i(Fl_Button*, void*) {
-  char uri[128];
-snprintf(uri, sizeof(uri), "https://www.youtube.com/@butt.broadcaster");
-fl_open_uri(uri);
-}
-void flgui::cb_YouTube(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_YouTube_i(o,v);
-}
-
 static const unsigned char idata_yt_icon[] =
 {0,0,0,0,0,0,0,0,0,0,0,13,0,0,0,125,0,0,0,210,0,0,0,247,0,0,0,255,0,0,0,255,
 0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,255,0,0,0,
@@ -2946,35 +2928,6 @@ void flgui::cb_input_gui_window_title(Fl_Input* o, void* v) {
   ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_input_gui_window_title_i(o,v);
 }
 
-void flgui::cb_Donate_i(Fl_Button*, void*) {
-  fl_open_uri("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LTRSQNTWN4L6L&source=url");
-}
-void flgui::cb_Donate(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Donate_i(o,v);
-}
-
-void flgui::cb_Become_i(Fl_Button*, void*) {
-  fl_open_uri("https://www.patreon.com/butt_broadcast");
-}
-void flgui::cb_Become(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Become_i(o,v);
-}
-
-void flgui::cb_Apple_i(Fl_Button*, void*) {
-  fl_open_uri("https://donorbox.org/butt");
-}
-void flgui::cb_Apple(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Apple_i(o,v);
-}
-
-void flgui::cb_Bitcoin_i(Fl_Button*, void*) {
-  this->window_donate_crypto->position(this->window_cfg->x(), this->window_cfg->y());
-this->window_donate_crypto->show();
-}
-void flgui::cb_Bitcoin(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_Bitcoin_i(o,v);
-}
-
 void flgui::cb_button_cfg_show_pw_i(Fl_Button*, void*) {
   button_add_srv_show_pwd_cb();
 }
@@ -3078,46 +3031,6 @@ void flgui::cb_button_add_icy_save_i(Fl_Button*, void*) {
 }
 void flgui::cb_button_add_icy_save(Fl_Button* o, void* v) {
   ((flgui*)(o->parent()->user_data()))->cb_button_add_icy_save_i(o,v);
-}
-
-void flgui::cb_Copy_i(Fl_Button*, void*) {
-  int len = this->output_bitcoin_addr->size();
-this->output_bitcoin_addr->position(0, len);
-this->output_bitcoin_addr->copy(1);
-
-fl_message(_("Bitcoin address has been copied to clipboard."));
-}
-void flgui::cb_Copy(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->user_data()))->cb_Copy_i(o,v);
-}
-
-void flgui::cb_Copy1_i(Fl_Button*, void*) {
-  int len = this->output_litecoin_addr->size();
-this->output_litecoin_addr->position(0, len);
-this->output_litecoin_addr->copy(1);
-
-fl_message(_("Litecoin address has been copied to clipboard."));
-}
-void flgui::cb_Copy1(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->user_data()))->cb_Copy1_i(o,v);
-}
-
-void flgui::cb_Copy2_i(Fl_Button*, void*) {
-  int len = this->output_monero_addr->size();
-this->output_monero_addr->position(0, len);
-this->output_monero_addr->copy(1);
-
-fl_message(_("Monero address has been copied to clipboard."));
-}
-void flgui::cb_Copy2(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->user_data()))->cb_Copy2_i(o,v);
-}
-
-void flgui::cb_Close_i(Fl_Button*, void*) {
-  this->window_donate_crypto->hide();
-}
-void flgui::cb_Close(Fl_Button* o, void* v) {
-  ((flgui*)(o->parent()->user_data()))->cb_Close_i(o,v);
 }
 
 void flgui::cb_choice_stream_mp3_enc_quality_i(Fl_Choice*, void*) {
@@ -4180,7 +4093,6 @@ flgui::flgui() {
     } // Fl_Box* label_p24dB
     { sponsor_logo = new Fl_Button(237, 27, 128, 61);
       sponsor_logo->box(FL_NO_BOX);
-      sponsor_logo->image( image_radio_co_badge() );
     } // Fl_Button* sponsor_logo
     { label_current_listeners = new Fl_Box(211, 83, 165, 16, gettext("Listeners: 0"));
       label_current_listeners->labelsize(18);
@@ -4193,11 +4105,11 @@ flgui::flgui() {
       info_output->textsize(15);
       Fl_Group::current()->resizable(info_output);
     } // Fl_Text_Display* info_output
-    window_main->size_range(430, 155, 430); window_main->is_main_window = true;
-    window_main->size_range(430, 276, 430, 0);
+    window_main->size_range(320, 155, 0); window_main->is_main_window = true;
+    window_main->size_range(320, 276, 0, 0);
     window_main->end();
   } // Fl_My_Double_Window* window_main
-  { window_cfg = new Fl_My_Double_Window(430, 680, gettext("butt settings"));
+  { window_cfg = new Fl_My_Double_Window(430, 680, gettext("bnbutt settings"));
     window_cfg->box(FL_FLAT_BOX);
     window_cfg->color(FL_BACKGROUND_COLOR);
     window_cfg->selection_color(FL_BACKGROUND_COLOR);
@@ -4295,26 +4207,26 @@ flgui::flgui() {
           } // Fl_Button* o
           o->end();
         } // Fl_Group* o
-        { group_agent = new Fl_Group(50, 385, 326, 75, gettext("Butt Agent"));
+        { group_agent = new Fl_Group(50, 385, 326, 75, gettext("bnbutt Agent"));
           group_agent->box(FL_ENGRAVED_FRAME);
           group_agent->align(Fl_Align(FL_ALIGN_TOP_LEFT));
           { check_start_agent = new Fl_Check_Button(56, 400, 157, 15, gettext("Start agent at startup"));
-            check_start_agent->tooltip(gettext("Start the butt agent when butt starts"));
+            check_start_agent->tooltip(gettext("Start the bnbutt agent when bnbutt starts"));
             check_start_agent->down_box(FL_DOWN_BOX);
             check_start_agent->callback((Fl_Callback*)cb_check_start_agent);
           } // Fl_Check_Button* check_start_agent
-          { check_minimize_to_tray = new Fl_Check_Button(56, 430, 150, 15, gettext("Minimize butt to tray"));
-            check_minimize_to_tray->tooltip(gettext("Minimize butt to tray"));
+          { check_minimize_to_tray = new Fl_Check_Button(56, 430, 150, 15, gettext("Minimize bnbutt to tray"));
+            check_minimize_to_tray->tooltip(gettext("Minimize bnbutt to tray"));
             check_minimize_to_tray->down_box(FL_DOWN_BOX);
             check_minimize_to_tray->callback((Fl_Callback*)cb_check_minimize_to_tray);
           } // Fl_Check_Button* check_minimize_to_tray
           { Fl_Button* o = new Fl_Button(261, 391, 105, 28, gettext("Start Agent"));
-            o->tooltip(gettext("Start the butt agent now"));
+            o->tooltip(gettext("Start the bnbutt agent now"));
             o->box(FL_ENGRAVED_BOX);
             o->callback((Fl_Callback*)cb_Start);
           } // Fl_Button* o
           { Fl_Button* o = new Fl_Button(261, 425, 105, 28, gettext("Stop Agent"));
-            o->tooltip(gettext("Stop the butt agent"));
+            o->tooltip(gettext("Stop the bnbutt agent"));
             o->box(FL_ENGRAVED_BOX);
             o->callback((Fl_Callback*)cb_Stop);
           } // Fl_Button* o
@@ -4332,21 +4244,6 @@ flgui::flgui() {
             o->tooltip(gettext("Check if a new version is available"));
             o->box(FL_ENGRAVED_BOX);
             o->callback((Fl_Callback*)cb_Check);
-          } // Fl_Button* o
-          o->end();
-        } // Fl_Group* o
-        { Fl_Group* o = new Fl_Group(50, 565, 330, 50, gettext("Help"));
-          o->box(FL_ENGRAVED_FRAME);
-          o->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-          { Fl_Button* o = new Fl_Button(58, 576, 135, 28, gettext("Manual"));
-            o->box(FL_ENGRAVED_BOX);
-            o->callback((Fl_Callback*)cb_Manual);
-          } // Fl_Button* o
-          { Fl_Button* o = new Fl_Button(235, 577, 135, 28, gettext("    YouTube"));
-            o->box(FL_ENGRAVED_BOX);
-            o->image( image_yt_icon() );
-            o->callback((Fl_Callback*)cb_YouTube);
-            o->align(Fl_Align(256));
           } // Fl_Button* o
           o->end();
         } // Fl_Group* o
@@ -4689,7 +4586,7 @@ n the \"Audio\" tab"));
             check_cfg_connect->callback((Fl_Callback*)cb_check_cfg_connect);
           } // Fl_Check_Button* check_cfg_connect
           { check_cfg_force_reconnecting = new Fl_Check_Button(55, 606, 205, 18, gettext("Force reconnecting"));
-            check_cfg_force_reconnecting->tooltip(gettext("If enabled butt keeps reconnecting regardless of the error message"));
+            check_cfg_force_reconnecting->tooltip(gettext("If enabled bnbutt keeps reconnecting regardless of the error message"));
             check_cfg_force_reconnecting->down_box(FL_DOWN_BOX);
             check_cfg_force_reconnecting->callback((Fl_Callback*)cb_check_cfg_force_reconnecting);
           } // Fl_Check_Button* check_cfg_force_reconnecting
@@ -5451,7 +5348,7 @@ n the \"Audio\" tab"));
           o->box(FL_ENGRAVED_FRAME);
           o->align(Fl_Align(FL_ALIGN_TOP_LEFT));
           { check_gui_attach = new Fl_Check_Button(56, 314, 300, 20, gettext("Attach settings window to main window"));
-            check_gui_attach->tooltip(gettext("Attach this window to the butt window"));
+            check_gui_attach->tooltip(gettext("Attach this window to the bnbutt window"));
             check_gui_attach->down_box(FL_DOWN_BOX);
             check_gui_attach->callback((Fl_Callback*)cb_check_gui_attach);
           } // Fl_Check_Button* check_gui_attach
@@ -5476,7 +5373,7 @@ n the \"Audio\" tab"));
             check_gui_lcd_auto->callback((Fl_Callback*)cb_check_gui_lcd_auto);
           } // Fl_Check_Button* check_gui_lcd_auto
           { check_gui_start_minimized = new Fl_Check_Button(56, 439, 149, 20, gettext("Start minimized"));
-            check_gui_start_minimized->tooltip(gettext("Minimize butt at startup"));
+            check_gui_start_minimized->tooltip(gettext("Minimize bnbutt at startup"));
             check_gui_start_minimized->down_box(FL_DOWN_BOX);
             check_gui_start_minimized->callback((Fl_Callback*)cb_check_gui_start_minimized);
           } // Fl_Check_Button* check_gui_start_minimized
@@ -5508,36 +5405,6 @@ n the \"Audio\" tab"));
             input_gui_window_title->when(FL_WHEN_CHANGED);
             this->input_gui_window_title->maximum_size(500);
           } // Fl_Input* input_gui_window_title
-          o->end();
-        } // Fl_Group* o
-        o->end();
-      } // Fl_Group* o
-      { Fl_Group* o = new Fl_Group(0, 20, 434, 660, gettext("Donate"));
-        o->hide();
-        { Fl_Group* o = new Fl_Group(55, 70, 326, 360, gettext("Donation"));
-          o->box(FL_ENGRAVED_FRAME);
-          o->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-          { Fl_Box* o = new Fl_Box(67, 75, 308, 150, gettext("Keeping this software up to date, adding\nnew features and answering support \
-mails\ntakes a lot of time and effort. If you can\nafford it, please consider \
-supporting this\nproject.\n\nThank you!"));
-            o->align(Fl_Align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE));
-          } // Fl_Box* o
-          { Fl_Button* o = new Fl_Button(67, 225, 300, 28, gettext("&Donate via PayPal"));
-            o->box(FL_ENGRAVED_BOX);
-            o->callback((Fl_Callback*)cb_Donate);
-          } // Fl_Button* o
-          { Fl_Button* o = new Fl_Button(67, 272, 300, 27, gettext("Become a &patron"));
-            o->box(FL_ENGRAVED_BOX);
-            o->callback((Fl_Callback*)cb_Become);
-          } // Fl_Button* o
-          { Fl_Button* o = new Fl_Button(67, 317, 300, 28, gettext("&Apple Pay, Google Pay, CC and more"));
-            o->box(FL_ENGRAVED_BOX);
-            o->callback((Fl_Callback*)cb_Apple);
-          } // Fl_Button* o
-          { Fl_Button* o = new Fl_Button(67, 361, 300, 28, gettext("&Bitcoin && Co"));
-            o->box(FL_ENGRAVED_BOX);
-            o->callback((Fl_Callback*)cb_Bitcoin);
-          } // Fl_Button* o
           o->end();
         } // Fl_Group* o
         o->end();
@@ -5733,50 +5600,6 @@ er PUT protocol"));
   info_visible = 1;
                   
   info_output->show();
-  { window_donate_crypto = new Fl_My_Double_Window(460, 255, gettext("Donate Cryptocurrency"));
-    window_donate_crypto->box(FL_FLAT_BOX);
-    window_donate_crypto->color(FL_BACKGROUND_COLOR);
-    window_donate_crypto->selection_color(FL_BACKGROUND_COLOR);
-    window_donate_crypto->labeltype(FL_NO_LABEL);
-    window_donate_crypto->labelfont(0);
-    window_donate_crypto->labelsize(14);
-    window_donate_crypto->labelcolor(FL_FOREGROUND_COLOR);
-    window_donate_crypto->user_data((void*)(this));
-    window_donate_crypto->align(Fl_Align(FL_ALIGN_TOP));
-    window_donate_crypto->when(FL_WHEN_RELEASE);
-    { output_bitcoin_addr = new Fl_Output(20, 40, 320, 22, gettext("Bitcoin"));
-      output_bitcoin_addr->box(FL_FLAT_BOX);
-      output_bitcoin_addr->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-      output_bitcoin_addr->value("bc1q4uq7h464rsu2cudrmuuqmc4tcr98d0edrhe5au");
-    } // Fl_Output* output_bitcoin_addr
-    { Fl_Button* o = new Fl_Button(350, 40, 88, 22, gettext("Copy"));
-      o->box(FL_ENGRAVED_BOX);
-      o->callback((Fl_Callback*)cb_Copy);
-    } // Fl_Button* o
-    { output_litecoin_addr = new Fl_Output(20, 100, 320, 22, gettext("Litecoin"));
-      output_litecoin_addr->box(FL_FLAT_BOX);
-      output_litecoin_addr->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-      output_litecoin_addr->value("Ld9gntf8fsYpmVcbstFkzz5R3sNPC3AhTx");
-    } // Fl_Output* output_litecoin_addr
-    { Fl_Button* o = new Fl_Button(350, 100, 88, 22, gettext("Copy"));
-      o->box(FL_ENGRAVED_BOX);
-      o->callback((Fl_Callback*)cb_Copy1);
-    } // Fl_Button* o
-    { output_monero_addr = new Fl_Output(20, 160, 320, 22, gettext("Monero"));
-      output_monero_addr->box(FL_FLAT_BOX);
-      output_monero_addr->align(Fl_Align(FL_ALIGN_TOP_LEFT));
-      output_monero_addr->value("85u8DacasxPNvKzY5kEiprBnbydDqg26yGAVEw7mdwccNFsrXMWCE4VQnV2JVfh5BTRheNnpDJqYjbqPrVRLEPAKP3dsYgc");
-    } // Fl_Output* output_monero_addr
-    { Fl_Button* o = new Fl_Button(350, 160, 88, 22, gettext("Copy"));
-      o->box(FL_ENGRAVED_BOX);
-      o->callback((Fl_Callback*)cb_Copy2);
-    } // Fl_Button* o
-    { Fl_Button* o = new Fl_Button(20, 217, 88, 22, gettext("&Close"));
-      o->box(FL_ENGRAVED_BOX);
-      o->callback((Fl_Callback*)cb_Close);
-    } // Fl_Button* o
-    window_donate_crypto->end();
-  } // Fl_My_Double_Window* window_donate_crypto
   { window_stream_codec_settings = new Fl_My_Double_Window(395, 385, gettext("Streaming Codec Settings"));
     window_stream_codec_settings->box(FL_FLAT_BOX);
     window_stream_codec_settings->color(FL_BACKGROUND_COLOR);
@@ -6464,7 +6287,7 @@ er PUT protocol"));
     } // Fl_Button* o
     window_rec_codec_settings->end();
   } // Fl_My_Double_Window* window_rec_codec_settings
-  { window_mixer = new Fl_My_Double_Window(430, 450, gettext("butt audio mixer"));
+  { window_mixer = new Fl_My_Double_Window(430, 450, gettext("bnbutt audio mixer"));
     window_mixer->box(FL_FLAT_BOX);
     window_mixer->color(FL_BACKGROUND_COLOR);
     window_mixer->selection_color(FL_BACKGROUND_COLOR);

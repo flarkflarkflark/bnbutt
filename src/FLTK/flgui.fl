@@ -21,8 +21,8 @@ class flgui {open
 \#include "config.h"}
       code2 {\#include "flgui.h"
 \#include "fl_timer_funcs.h"}
-      code3 {window_main->size_range(430, 155, 430); window_main->is_main_window = true;}
-      class Fl_My_Double_Window size_range {430 276 430 0} visible
+      code3 {window_main->size_range(320, 155, 0); window_main->is_main_window = true;}
+      class Fl_My_Double_Window size_range {320 276 0 0} visible
     } {
       Fl_Box lcd {
         callback {ILM216_cb();}
@@ -107,7 +107,7 @@ class flgui {open
         xywh {390 190 30 16} labelsize 10
       }
       Fl_Button sponsor_logo {
-        image {../xpm/radio_co_badge.png} xywh {237 27 128 61} box NO_BOX
+        xywh {237 27 128 61} box NO_BOX
       }
       Fl_Box label_current_listeners {
         label {Listeners: 0}
@@ -118,7 +118,7 @@ class flgui {open
       }
     }
     Fl_Window window_cfg {
-      label {butt settings}
+      label {bnbutt settings}
       callback {if(window_cfg->shown())
 {
     window_cfg->hide();
@@ -215,28 +215,28 @@ class flgui {open
             }
           }
           Fl_Group group_agent {
-            label {Butt Agent}
+            label {bnbutt Agent}
             xywh {50 385 326 75} box ENGRAVED_FRAME align 5
           } {
             Fl_Check_Button check_start_agent {
               label {Start agent at startup}
               callback {check_start_agent_cb();}
-              tooltip {Start the butt agent when butt starts} xywh {56 400 157 15} down_box DOWN_BOX
+              tooltip {Start the bnbutt agent when bnbutt starts} xywh {56 400 157 15} down_box DOWN_BOX
             }
             Fl_Check_Button check_minimize_to_tray {
-              label {Minimize butt to tray}
+              label {Minimize bnbutt to tray}
               callback {check_minimize_to_tray_cb();}
-              tooltip {Minimize butt to tray} xywh {56 430 150 15} down_box DOWN_BOX
+              tooltip {Minimize bnbutt to tray} xywh {56 430 150 15} down_box DOWN_BOX
             }
             Fl_Button {} {
               label {Start Agent}
               callback {button_start_agent_cb();}
-              tooltip {Start the butt agent now} xywh {261 391 105 28} box ENGRAVED_BOX
+              tooltip {Start the bnbutt agent now} xywh {261 391 105 28} box ENGRAVED_BOX
             }
             Fl_Button {} {
               label {Stop Agent}
               callback {button_stop_agent_cb();}
-              tooltip {Stop the butt agent} xywh {261 425 105 28} box ENGRAVED_BOX
+              tooltip {Stop the bnbutt agent} xywh {261 425 105 28} box ENGRAVED_BOX
             }
           }
           Fl_Group {} {
@@ -252,27 +252,6 @@ class flgui {open
               label {Check now}
               callback {button_cfg_check_for_updates_cb();}
               tooltip {Check if a new version is available} xywh {261 497 105 28} box ENGRAVED_BOX
-            }
-          }
-          Fl_Group {} {
-            label Help open
-            xywh {50 565 330 50} box ENGRAVED_FRAME align 5
-          } {
-            Fl_Button {} {
-              label Manual
-              callback {char uri[128];
-snprintf(uri, sizeof(uri), "https://buttm.app/butt/release/%s/butt-%s_manual.html", VERSION, VERSION);
-fl_open_uri(uri);}
-              xywh {58 576 135 28} box ENGRAVED_BOX
-              code0 {\#include <FL/filename.H>}
-            }
-            Fl_Button {} {
-              label {    YouTube}
-              callback {char uri[128];
-snprintf(uri, sizeof(uri), "https://www.youtube.com/@butt.broadcaster");
-fl_open_uri(uri);}
-              image {../xpm/yt_icon.png} xywh {235 577 135 28} box ENGRAVED_BOX align 256
-              code0 {\#include <FL/filename.H>}
             }
           }
         }
@@ -656,7 +635,7 @@ else
             Fl_Check_Button check_cfg_force_reconnecting {
               label {Force reconnecting}
               callback {check_cfg_force_reconnecting_cb();}
-              tooltip {If enabled butt keeps reconnecting regardless of the error message} xywh {55 606 205 18} down_box DOWN_BOX
+              tooltip {If enabled bnbutt keeps reconnecting regardless of the error message} xywh {55 606 205 18} down_box DOWN_BOX
             }
             Fl_Box {} {
               label {Reconnect delay:}
@@ -1385,7 +1364,7 @@ CA, you can leave these fields blank.}
             Fl_Check_Button check_gui_attach {
               label {Attach settings window to main window}
               callback {check_gui_attach_cb();}
-              tooltip {Attach this window to the butt window} xywh {56 314 300 20} down_box DOWN_BOX
+              tooltip {Attach this window to the bnbutt window} xywh {56 314 300 20} down_box DOWN_BOX
             }
             Fl_Check_Button check_gui_ontop {
               label {Stay always on top}
@@ -1410,7 +1389,7 @@ CA, you can leave these fields blank.}
             Fl_Check_Button check_gui_start_minimized {
               label {Start minimized}
               callback {check_gui_start_minimized_cb();}
-              tooltip {Minimize butt at startup} xywh {56 439 149 20} down_box DOWN_BOX
+              tooltip {Minimize bnbutt at startup} xywh {56 439 149 20} down_box DOWN_BOX
             }
             Fl_Check_Button check_gui_disable_gain_slider {
               label {Disable gain control}
@@ -1440,50 +1419,6 @@ CA, you can leave these fields blank.}
               callback {input_gui_window_title_cb();}
               tooltip {Define a custom window title} xywh {55 566 325 25} align 5 when 1
               code0 {this->input_gui_window_title->maximum_size(500);}
-            }
-          }
-        }
-        Fl_Group {} {
-          label Donate
-          xywh {0 20 434 660} hide
-        } {
-          Fl_Group {} {
-            label Donation open
-            xywh {55 70 326 360} box ENGRAVED_FRAME align 5
-          } {
-            Fl_Box {} {
-              label {Keeping this software up to date, adding
-new features and answering support mails
-takes a lot of time and effort. If you can
-afford it, please consider supporting this
-project.
-
-Thank you!}
-              xywh {67 75 308 150} align 20
-            }
-            Fl_Button {} {
-              label {&Donate via PayPal}
-              callback {fl_open_uri("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LTRSQNTWN4L6L&source=url");}
-              xywh {67 225 300 28} box ENGRAVED_BOX
-              code0 {\#include <FL/filename.H>}
-            }
-            Fl_Button {} {
-              label {Become a &patron}
-              callback {fl_open_uri("https://www.patreon.com/butt_broadcast");}
-              xywh {67 272 300 27} box ENGRAVED_BOX
-              code0 {\#include <FL/filename.H>}
-            }
-            Fl_Button {} {
-              label {&Apple Pay, Google Pay, CC and more}
-              callback {fl_open_uri("https://donorbox.org/butt");}
-              xywh {67 317 300 28} box ENGRAVED_BOX
-              code0 {\#include <FL/filename.H>}
-            }
-            Fl_Button {} {
-              label {&Bitcoin && Co}
-              callback {this->window_donate_crypto->position(this->window_cfg->x(), this->window_cfg->y());
-this->window_donate_crypto->show();}
-              xywh {67 361 300 28} box ENGRAVED_BOX
             }
           }
         }
@@ -1702,62 +1637,6 @@ info_output->buffer(info_buffer);
 info_visible = 1;
                 
 info_output->show();} {}
-    Fl_Window window_donate_crypto {
-      label {Donate Cryptocurrency}
-      xywh {590 548 460 255} type Double hide
-      class Fl_My_Double_Window
-    } {
-      Fl_Output output_bitcoin_addr {
-        label Bitcoin
-        xywh {20 40 320 22} box FLAT_BOX align 5
-        code0 {output_bitcoin_addr->value("bc1q4uq7h464rsu2cudrmuuqmc4tcr98d0edrhe5au");}
-      }
-      Fl_Button {} {
-        label Copy
-        callback {int len = this->output_bitcoin_addr->size();
-this->output_bitcoin_addr->position(0, len);
-this->output_bitcoin_addr->copy(1);
-
-fl_message(_("Bitcoin address has been copied to clipboard."));}
-        xywh {350 40 88 22} box ENGRAVED_BOX
-        code0 {\#include <FL/fl_ask.H>}
-      }
-      Fl_Output output_litecoin_addr {
-        label Litecoin
-        xywh {20 100 320 22} box FLAT_BOX align 5
-        code0 {output_litecoin_addr->value("Ld9gntf8fsYpmVcbstFkzz5R3sNPC3AhTx");}
-      }
-      Fl_Button {} {
-        label Copy
-        callback {int len = this->output_litecoin_addr->size();
-this->output_litecoin_addr->position(0, len);
-this->output_litecoin_addr->copy(1);
-
-fl_message(_("Litecoin address has been copied to clipboard."));}
-        xywh {350 100 88 22} box ENGRAVED_BOX
-        code0 {\#include <FL/fl_ask.H>}
-      }
-      Fl_Output output_monero_addr {
-        label Monero
-        xywh {20 160 320 22} box FLAT_BOX align 5
-        code0 {output_monero_addr->value("85u8DacasxPNvKzY5kEiprBnbydDqg26yGAVEw7mdwccNFsrXMWCE4VQnV2JVfh5BTRheNnpDJqYjbqPrVRLEPAKP3dsYgc");}
-      }
-      Fl_Button {} {
-        label Copy
-        callback {int len = this->output_monero_addr->size();
-this->output_monero_addr->position(0, len);
-this->output_monero_addr->copy(1);
-
-fl_message(_("Monero address has been copied to clipboard."));}
-        xywh {350 160 88 22} box ENGRAVED_BOX
-        code0 {\#include <FL/fl_ask.H>}
-      }
-      Fl_Button {} {
-        label {&Close}
-        callback {this->window_donate_crypto->hide();}
-        xywh {20 217 88 22} box ENGRAVED_BOX
-      }
-    }
     Fl_Window window_stream_codec_settings {
       label {Streaming Codec Settings}
       xywh {70 97 395 385} type Double hide
@@ -3114,7 +2993,7 @@ fl_message(_("Monero address has been copied to clipboard."));}
       }
     }
     Fl_Window window_mixer {
-      label {butt audio mixer}
+      label {bnbutt audio mixer}
       xywh {228 590 430 450} type Double hide
       class Fl_My_Double_Window
     } {

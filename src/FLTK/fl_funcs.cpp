@@ -1062,6 +1062,165 @@ void print_lcd(const char *text, int len, int home, int clear)
     }
 }
 
+struct WidgetScale {
+    Fl_Widget *widget;
+    int x;
+    int y;
+    int w;
+    int h;
+    int label_size;
+    int text_size;
+};
+
+void resize_main_window_layout(int w, int h)
+{
+    static bool layout_init = false;
+    static int base_w = 0;
+    static int base_h = 0;
+    static WidgetScale layout[] = {
+        {nullptr, 0, 0, 0, 0, 0, 0}, // lcd
+        {nullptr, 0, 0, 0, 0, 0, 0}, // label_volume
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_mixer
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_record
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_disconnect
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_connect
+        {nullptr, 0, 0, 0, 0, 0, 0}, // vu_tabs
+        {nullptr, 0, 0, 0, 0, 0, 0}, // vumeter
+        {nullptr, 0, 0, 0, 0, 0, 0}, // invisible_tab_box
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_cfg
+        {nullptr, 0, 0, 0, 0, 0, 0}, // button_info
+        {nullptr, 0, 0, 0, 0, 0, 0}, // label_n24dB
+        {nullptr, 0, 0, 0, 0, 0, 0}, // slider_gain
+        {nullptr, 0, 0, 0, 0, 0, 0}, // label_p24dB
+        {nullptr, 0, 0, 0, 0, 0, 0}, // sponsor_logo
+        {nullptr, 0, 0, 0, 0, 0, 0}, // label_current_listeners
+        {nullptr, 0, 0, 0, 0, 0, 0}, // info_output
+    };
+
+    if (!fl_g || !fl_g->window_main) {
+        return;
+    }
+
+    if (!layout_init) {
+        base_w = fl_g->window_main->w();
+        base_h = fl_g->window_main->h();
+
+        Fl_Widget *widgets[] = {
+            fl_g->lcd,
+            fl_g->label_volume,
+            fl_g->button_mixer,
+            fl_g->button_record,
+            fl_g->button_disconnect,
+            fl_g->button_connect,
+            fl_g->vu_tabs,
+            fl_g->vumeter,
+            fl_g->invisible_tab_box,
+            fl_g->button_cfg,
+            fl_g->button_info,
+            fl_g->label_n24dB,
+            fl_g->slider_gain,
+            fl_g->label_p24dB,
+            fl_g->sponsor_logo,
+            fl_g->label_current_listeners,
+            fl_g->info_output
+        };
+
+        for (size_t i = 0; i < (sizeof(widgets) / sizeof(widgets[0])); ++i) {
+            layout[i].widget = widgets[i];
+            layout[i].x = widgets[i]->x();
+            layout[i].y = widgets[i]->y();
+            layout[i].w = widgets[i]->w();
+            layout[i].h = widgets[i]->h();
+            layout[i].label_size = widgets[i]->labelsize();
+            layout[i].text_size = 0;
+            if (Fl_Text_Display *text = dynamic_cast<Fl_Text_Display *>(widgets[i])) {
+                layout[i].text_size = text->textsize();
+            }
+        }
+
+        layout_init = true;
+    }
+
+    if (base_w <= 0 || base_h <= 0) {
+        return;
+    }
+
+    float sx = (float)w / (float)base_w;
+    float sy = sx;
+    float sfont = sx;
+
+    if (sfont < 0.6f) {
+        sfont = 0.6f;
+    }
+    if (sfont > 2.5f) {
+        sfont = 2.5f;
+    }
+
+    for (size_t i = 0; i < (sizeof(layout) / sizeof(layout[0])); ++i) {
+        WidgetScale &entry = layout[i];
+        if (!entry.widget) {
+            continue;
+        }
+
+        int nx = (int)(entry.x * sx + 0.5f);
+        int ny = (int)(entry.y * sy + 0.5f);
+        int nw = (int)(entry.w * sx + 0.5f);
+        int nh = (int)(entry.h * sy + 0.5f);
+
+        if (nw < 1) {
+            nw = 1;
+        }
+        if (nh < 1) {
+            nh = 1;
+        }
+
+        entry.widget->resize(nx, ny, nw, nh);
+
+        if (entry.label_size > 0) {
+            int new_label_size = (int)(entry.label_size * sfont + 0.5f);
+            if (new_label_size < 8) {
+                new_label_size = 8;
+            }
+            if (new_label_size > 28) {
+                new_label_size = 28;
+            }
+            entry.widget->labelsize(new_label_size);
+        }
+
+        if (entry.text_size > 0) {
+            int new_text_size = (int)(entry.text_size * sfont + 0.5f);
+            if (new_text_size < 8) {
+                new_text_size = 8;
+            }
+            if (new_text_size > 28) {
+                new_text_size = 28;
+            }
+            Fl_Text_Display *text = dynamic_cast<Fl_Text_Display *>(entry.widget);
+            if (text) {
+                text->textsize(new_text_size);
+            }
+        }
+    }
+
+    if (fl_g->info_output) {
+        int nx = (int)(layout[16].x * sx + 0.5f);
+        int ny = (int)(layout[16].y * sy + 0.5f);
+        int nw = w - nx;
+        int nh = h - ny;
+
+        if (nw < 1) {
+            nw = 1;
+        }
+        if (nh < 1) {
+            nh = 1;
+        }
+
+        fl_g->info_output->resize(nx, ny, nw, nh);
+    }
+
+    fl_g->window_main->redraw();
+}
+
 int eval_record_path(int use_previous_index)
 {
     int ret;
