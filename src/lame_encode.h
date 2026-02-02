@@ -1,6 +1,6 @@
 // lame encoding functions for butt
 //
-// Copyright 2007-2008 by Daniel Noethen.
+// Copyright 2007-2018 by Daniel Noethen.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,24 +19,38 @@
 #include <stdlib.h>
 #include <lame/lame.h>
 
-
 struct lame_enc {
     lame_global_flags *gfp;
     int bitrate;
-    int samplerate;
+    int samplerate_in;
+    int samplerate_out;
     int channel;
     volatile int state;
+
+    int enc_quality;
+    int stereo_mode;
+    int bitrate_mode;
+    int vbr_quality;
+    int vbr_min_bitrate;
+    int vbr_max_bitrate;
+    int vbr_force_min_bitrate;
+
+    float lowpass_freq;
+    float lowpass_width;
+    float highpass_freq;
+    float highpass_width;
 };
 
 enum {
     LAME_READY = 0,
-    LAME_BUSY = 1
+    LAME_BUSY = 1,
 };
 
 int lame_enc_init(lame_enc *lame);
-int lame_enc_encode(lame_enc *lame, short *pcm_buf, char *enc_buf, int samples, int size);
+int lame_enc_get_samplerate(lame_enc *lame);
+int lame_enc_encode(lame_enc *lame, float *pcm_buf, char *enc_buf, int samples, int buf_size);
+int lame_enc_flush_file(lame_enc *lame, FILE *file);
 int lame_enc_reinit(lame_enc *lame);
 void lame_enc_close(lame_enc *lame);
 
 #endif
-

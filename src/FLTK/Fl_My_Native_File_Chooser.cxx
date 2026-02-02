@@ -1,4 +1,4 @@
-// "$Id: Fl_My_Native_File_Chooser.cxx 8864 2011-07-19 04:49:30Z greg.ercolano $"
+// "$Id$"
 //
 // FLTK native OS file chooser widget
 //
@@ -23,17 +23,16 @@
 
 // Use Apple's chooser
 #ifdef __APPLE__
-#include "FL/Fl_My_Native_File_Chooser.H"
 #include "Fl_My_Native_File_Chooser_MAC.mm"
 #endif
 
 // All else falls back to FLTK's own chooser
-#if ! defined(__APPLE__) && !defined(WIN32)
+#if !defined(__APPLE__) && !defined(WIN32)
 #include "Fl_My_Native_File_Chooser_FLTK.cxx"
 #endif
 
 const char *Fl_My_Native_File_Chooser::file_exists_message = "File exists. Are you sure you want to overwrite?";
 
 //
-// End of "$Id: Fl_My_Native_File_Chooser.cxx 8864 2011-07-19 04:49:30Z greg.ercolano $".
+// End of "$Id$".
 //

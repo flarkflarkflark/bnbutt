@@ -1,6 +1,6 @@
 // aac encoding functions for butt
 //
-// Copyright 2007-20016 by Daniel Noethen.
+// Copyright 2007-2018 by Daniel Noethen.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,28 +16,38 @@
 #ifndef AAC_ENCODE_H
 #define AAC_ENCODE_H
 
-#include <fdk-aac/aacenc_lib.h>
+#include "config.h"
+
+#ifdef HAVE_LIBFDK_AAC
+
+#include "aac_dll.h"
 
 struct aac_enc {
-	HANDLE_AACENCODER handle;
-	AACENC_InfoStruct info;
-    int aot;
-    int overwrite_aot;
+    HANDLE_AACENCODER handle;
+    AACENC_InfoStruct info;
     int bitrate;
     int samplerate;
     int channel;
+    int bitrate_mode;
+    int afterburner;
+    int profile;
     volatile int state;
 };
 
 enum {
     AAC_READY = 0,
-    AAC_BUSY = 1
+    AAC_BUSY = 1,
 };
 
 int aac_enc_init(aac_enc *aac);
-int aac_enc_encode(aac_enc *aac, short *pcm_buf, char *enc_buf, int samples, int size);
+int aac_enc_encode(aac_enc *aac, float *pcm_buf, char *enc_buf, int samples, int enc_buf_size);
+int aac_enc_get_samplerate(aac_enc *aac);
 int aac_enc_reinit(aac_enc *aac);
+int aac_enc_flush_file(aac_enc *aac, FILE *file);
 void aac_enc_close(aac_enc *aac);
 
-#endif
+#endif // HAVE_LIBFDK_AAC
 
+extern int g_aac_lib_available;
+
+#endif // AAC_ENCODE_H

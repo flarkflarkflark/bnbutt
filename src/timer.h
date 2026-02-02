@@ -1,6 +1,6 @@
 // timer related functions
 //
-// Copyright 2007-2008 by Daniel Noethen.
+// Copyright 2007-2018 by Daniel Noethen.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,18 +17,23 @@
 #define TIMER_H
 
 #include <time.h>
+#include <sys/time.h>
+#include <stdint.h>
 
-struct sec_timer
-{
-    time_t start_time;
-    time_t new_time;
-    int duration;
-};
+typedef struct timer_ms {
+    uint64_t start_time;
+    uint64_t new_time;
+    float duration;
+    bool is_running = false;
+} timer_ms_t;
 
-
-void timer_init(sec_timer *t, int duration);
-int timer_is_elapsed(sec_timer *t);
-char *timer_get_time_str(sec_timer *t);
+void timer_init(timer_ms_t *t, float duration);
+void timer_start(timer_ms_t *t);
+int timer_is_elapsed(timer_ms_t *t);
+char *timer_get_time_str(timer_ms_t *t);
+float timer_get_elapsed_time(timer_ms_t *t);
+uint64_t timer_get_cur_time(void);
+void timer_reset(timer_ms_t *t);
+void timer_stop(timer_ms_t *t);
 
 #endif
-
