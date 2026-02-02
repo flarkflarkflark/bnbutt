@@ -7,10 +7,15 @@
 //
 
 #import "CurrentTrackOSX.h"
+
+#if __has_include("iTunes.h") && __has_include("Spotify.h") && __has_include("VOX.h")
+#define HAVE_OSX_MEDIA_SCRIPTS 1
 #import "iTunes.h"
 #import "Spotify.h"
 #import "VOX.h"
+#endif
 
+#if defined(HAVE_OSX_MEDIA_SCRIPTS)
 const char* getCurrentTrackFromiTunes(int artist_title_order) {
     NSProcessInfo *pInfo = [NSProcessInfo processInfo];
     NSOperatingSystemVersion version = [pInfo operatingSystemVersion];
@@ -88,3 +93,25 @@ currentTrackFunction getCurrentTrackFunctionFromId(int i) {
         default: return NULL;
     }
 }
+#else
+const char* getCurrentTrackFromiTunes(int artist_title_order) {
+    (void)artist_title_order;
+    return NULL;
+}
+
+const char* getCurrentTrackFromSpotify(int artist_title_order) {
+    (void)artist_title_order;
+    return NULL;
+}
+
+const char* getCurrentTrackFromVOX(int artist_title_order) {
+    (void)artist_title_order;
+    return NULL;
+}
+
+typedef const char* (*currentTrackFunction)(int);
+currentTrackFunction getCurrentTrackFunctionFromId(int i) {
+    (void)i;
+    return NULL;
+}
+#endif
