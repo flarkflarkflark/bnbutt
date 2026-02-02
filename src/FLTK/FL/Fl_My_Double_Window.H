@@ -16,6 +16,7 @@
 #define FL_MY_DOUBLE_WINDOW_H
 
 #include <FL/x.H>
+#include <FL/Enumerations.H>
 #include <FL/Fl_Double_Window.H>
 
 void resize_main_window_layout(int w, int h);
