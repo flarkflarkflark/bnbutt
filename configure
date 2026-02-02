@@ -9349,6 +9349,7 @@ then :
 else $as_nop
   as_fn_error $? "**** Could not find datachannel      ****" "$LINENO" 5
 fi
+fi
         ;;
     *)
         as_fn_error $? "\"OS $host_os is not supported\"" "$LINENO" 5
