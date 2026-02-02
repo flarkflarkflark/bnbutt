@@ -70,10 +70,6 @@ jobs:
       - name: Build (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          if [ "${{ runner.os }}" = "Linux" ]; then
-            autoreconf -fi
-          fi
-
           if [ "${{ runner.os }}" = "macOS" ]; then
             BREW_PREFIX="$(brew --prefix)"
             export CPPFLAGS="-I${BREW_PREFIX}/include"
